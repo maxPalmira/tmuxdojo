@@ -7,6 +7,10 @@
     <title>Tmux Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        // Shim for process.env which is required by the Gemini SDK and common JS patterns
+        window.process = window.process || { env: {} };
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -48,5 +52,7 @@
 </head>
 <body>
     <div id="root"></div>
+    <!-- This links the application logic to the page -->
+    <script type="module" src="index.tsx"></script>
 </body>
 </html>
