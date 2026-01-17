@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { AppState, WindowType, LayoutNode, CommandBarMode } from './types';
 import { LEVELS, TERMINAL_COLORS } from './constants';
 import LayoutRenderer from './components/LayoutRenderer';
@@ -635,6 +636,7 @@ const App: React.FC = () => {
           <span className="text-[#7aa2f7] font-black">{lastKeyPressed === " " ? "SPC" : lastKeyPressed === "Enter" ? "ENT" : lastKeyPressed === "prefix" ? "CTRL+B" : lastKeyPressed || 'WAITING'}</span>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 };
