@@ -1,0 +1,5 @@
+{
+  "name": "Tmux Master: Keyboard Dojo",
+  "description": "A high-fidelity tmux shortcut trainer featuring a simulated terminal environment, progressive levels, and real-time key sequence detection.",
+  "requestFramePermissions": []
+}
