@@ -1,5 +1,6 @@
+import { Level, LayoutNode } from './types';
 
-import { Level } from './types';
+const createPane = (id: string): LayoutNode => ({ type: 'pane', id });
 
 export const PREFIX_KEY = 'b'; // Ctrl + b
 export const TERMINAL_COLORS = {
@@ -13,51 +14,18 @@ export const TERMINAL_COLORS = {
   activeWindow: 'bg-[#7aa2f7] text-[#1a1b26]',
 };
 
-export const TMUX_REFERENCE = [
-  { key: 'Ctrl+b z', desc: 'Toggle Zoom (Maximize Pane)' },
-  { key: 'Ctrl+b n', desc: 'Next Window' },
-  { key: 'Ctrl+b p', desc: 'Previous Window' },
-  { key: 'Ctrl+b d', desc: 'Detach Session' },
-  { key: 'Ctrl+b [', desc: 'Enter Copy Mode (Scroll)' },
-  { key: 'Ctrl+b f', desc: 'Find Window' },
-  { key: 'Ctrl+b w', desc: 'List Windows (Interactively)' },
-  { key: 'Ctrl+b ,', desc: 'Rename Current Window' },
-  { key: 'Ctrl+b .', desc: 'Move Current Window' },
-  { key: 'Ctrl+b &', desc: 'Kill Current Window' },
-  { key: 'Ctrl+b $', desc: 'Rename Current Session' },
-  { key: 'Ctrl+b s', desc: 'List Sessions' },
-  { key: 'Ctrl+b t', desc: 'Show Clock' },
-  { key: 'Ctrl+b q', desc: 'Show Pane Indexes' },
-  { key: 'Ctrl+b o', desc: 'Rotate to Next Pane' },
-  { key: 'Ctrl+b Space', desc: 'Cycle Layout Presets' },
-  { key: 'Ctrl+b {', desc: 'Move Current Pane Left' },
-  { key: 'Ctrl+b }', desc: 'Move Current Pane Right' },
-  { key: 'Ctrl+b Ctrl+Arrow', desc: 'Resize Panes (1 cell)' },
-  { key: 'Ctrl+b Alt+Arrow', desc: 'Resize Panes (5 cells)' },
-  { key: 'Ctrl+b L', desc: 'Switch to Last Session' },
-];
-
 export const LEVELS: Level[] = [
   {
     id: 1,
-    title: "The Sacred Prefix",
-    description: "In tmux, the prefix is the 'master key'. Default is Ctrl+b.",
-    objective: "Press Ctrl+b to activate the prefix mode.",
-    requiredActions: ['prefix'],
-    commandsCovered: ['Ctrl+b'],
-    hint: "Hold 'Control' and press 'b' together."
+    title: "Split Vertically",
+    description: "Welcome to the Dojo! In tmux, all commands start with a **Prefix** (master key). The default is **Ctrl+b**. This 'arms' the terminal. Once armed, pressing **%** creates a vertical split.",
+    objective: "Activate the Prefix (Ctrl+b), then press % to split vertically.",
+    requiredActions: ['prefix', '%'],
+    commandsCovered: ['Ctrl+b %'],
+    hint: "Hold 'Control' and press 'b', then press Shift+5 (%)"
   },
   {
     id: 2,
-    title: "Split Vertically",
-    description: "Splitting allows side-by-side terminals. '%' creates a vertical split.",
-    objective: "Prefix then '%' to split vertically.",
-    requiredActions: ['prefix', '%'],
-    commandsCovered: ['Ctrl+b %'],
-    hint: "Ctrl+b, then Shift+5."
-  },
-  {
-    id: 3,
     title: "The Triple Split",
     description: "You can keep splitting panes as long as there is room.",
     objective: "Split the current pane vertically twice.",
@@ -66,16 +34,16 @@ export const LEVELS: Level[] = [
     hint: "Ctrl+b, %, Ctrl+b, %."
   },
   {
-    id: 4,
+    id: 3,
     title: "Split Horizontally",
-    description: "Horizontal splits are great for log monitoring. Use '\"'.",
-    objective: "Prefix then '\"' to split horizontally.",
+    description: "Horizontal splits are great for log monitoring. Use \".",
+    objective: "Prefix then \" to split horizontally.",
     requiredActions: ['prefix', '"'],
     commandsCovered: ['Ctrl+b "'],
     hint: "Ctrl+b, then Shift+'."
   },
   {
-    id: 5,
+    id: 4,
     title: "The Stacked Row",
     description: "Stacking horizontal panes helps watch multiple outputs.",
     objective: "Split the current pane horizontally twice.",
@@ -84,7 +52,7 @@ export const LEVELS: Level[] = [
     hint: "Ctrl+b, \", Ctrl+b, \"."
   },
   {
-    id: 6,
+    id: 5,
     title: "The Quadrant",
     description: "Ultimate control over terminal real estate.",
     objective: "Split vertically, then split horizontally.",
@@ -93,9 +61,9 @@ export const LEVELS: Level[] = [
     hint: "Ctrl+b, %, then Ctrl+b, \"."
   },
   {
-    id: 7,
+    id: 6,
     title: "Basic Navigation",
-    description: "Prefix + Arrow Keys to move focus instantly.",
+    description: "Prefix + Arrow Keys to move focus instantly between panes.",
     objective: "Move to the right pane.",
     requiredActions: ['prefix', 'ArrowRight'],
     commandsCovered: ['Ctrl+b Arrows'],
@@ -112,9 +80,9 @@ export const LEVELS: Level[] = [
     }
   },
   {
-    id: 8,
+    id: 7,
     title: "The Circle Path",
-    description: "Mastering navigation means reaching any pane instantly.",
+    description: "Mastering navigation means reaching any pane instantly without looking.",
     objective: "Move Right, then Move Left.",
     requiredActions: ['prefix', 'ArrowRight', 'prefix', 'ArrowLeft'],
     commandsCovered: ['Ctrl+b Arrows'],
@@ -137,28 +105,28 @@ export const LEVELS: Level[] = [
     }
   },
   {
-    id: 9,
+    id: 8,
     title: "The New Frontier",
-    description: "Windows are like tabs. 'c' creates a fresh window.",
-    objective: "Create a new window using 'c'.",
+    description: "Windows are like browser tabs. c creates a fresh window.",
+    objective: "Create a new window using c.",
     requiredActions: ['prefix', 'c'],
     commandsCovered: ['Ctrl+b c'],
     hint: "Ctrl+b, then 'c'."
   },
   {
-    id: 10,
+    id: 9,
     title: "Expansion Pack",
-    description: "Organize projects into different windows.",
+    description: "Organize your projects into different windows for better focus.",
     objective: "Create two new windows in a row.",
     requiredActions: ['prefix', 'c', 'prefix', 'c'],
     commandsCovered: ['Ctrl+b c'],
     hint: "Ctrl+b, c, Ctrl+b, c."
   },
   {
-    id: 11,
+    id: 10,
     title: "Window Backtrack",
-    description: "'p' takes you to the Previous window.",
-    objective: "Go to the previous window using 'p'.",
+    description: "p takes you to the Previous window in your list.",
+    objective: "Go to the previous window using p.",
     requiredActions: ['prefix', 'p'],
     commandsCovered: ['Ctrl+b p'],
     hint: "Ctrl+b, then 'p'.",
@@ -171,9 +139,9 @@ export const LEVELS: Level[] = [
     }
   },
   {
-    id: 12,
+    id: 11,
     title: "The Jumper",
-    description: "Rapidly cycle through windows to check status.",
+    description: "Rapidly cycle through windows to check background status.",
     objective: "Go to Previous window twice.",
     requiredActions: ['prefix', 'p', 'prefix', 'p'],
     commandsCovered: ['Ctrl+b p'],
@@ -188,19 +156,19 @@ export const LEVELS: Level[] = [
     }
   },
   {
-    id: 13,
+    id: 12,
     title: "Remote Work",
-    description: "Open a new window and split it immediately.",
+    description: "Open a new window and split it immediately to start a sub-task.",
     objective: "New window, then split it vertically.",
     requiredActions: ['prefix', 'c', 'prefix', '%'],
     commandsCovered: ['Ctrl+b c', 'Ctrl+b %'],
     hint: "Ctrl+b, c, then Ctrl+b, %."
   },
   {
-    id: 14,
+    id: 13,
     title: "Termination",
-    description: "When done with a pane, 'x' initiates a kill.",
-    objective: "Kill current pane with 'x' and confirm with 'y'.",
+    description: "When finished with a pane, x initiates a kill confirmation.",
+    objective: "Kill current pane with x and confirm with y.",
     requiredActions: ['prefix', 'x', 'y'],
     commandsCovered: ['Ctrl+b x', 'y'],
     hint: "Ctrl+b, x, then 'y'.",
@@ -216,9 +184,9 @@ export const LEVELS: Level[] = [
     }
   },
   {
-    id: 15,
+    id: 14,
     title: "Mass Cleanup",
-    description: "Close multiple panes efficiently.",
+    description: "Close multiple panes efficiently to tidy up your workspace.",
     objective: "Kill pane twice (x,y,x,y).",
     requiredActions: ['prefix', 'x', 'y', 'prefix', 'x', 'y'],
     commandsCovered: ['Ctrl+b x', 'y'],
@@ -241,42 +209,42 @@ export const LEVELS: Level[] = [
     }
   },
   {
-    id: 16,
+    id: 15,
     title: "The Command Deck",
-    description: "The ':' key opens the command prompt.",
-    objective: "Open command mode using ':'.",
+    description: "The : key opens the command prompt at the bottom of the screen.",
+    objective: "Open command mode using :.",
     requiredActions: ['prefix', ':'],
     commandsCovered: ['Ctrl+b :'],
     hint: "Ctrl+b, then ':'."
   },
   {
-    id: 17,
+    id: 16,
     title: "Command Discipline",
-    description: "Entering command mode for session management.",
+    description: "Entering command mode for session management and configuration.",
     objective: "Open command mode twice.",
     requiredActions: ['prefix', ':', 'prefix', ':'],
     commandsCovered: ['Ctrl+b :'],
     hint: "Ctrl+b, :, then do it again."
   },
   {
-    id: 18,
+    id: 17,
     title: "The Multi-Tool",
-    description: "Navigate, modify, and clean your environment.",
+    description: "Navigate, modify, and clean your terminal environment in one flow.",
     objective: [
       "1. Split Vertically (%)",
-      "2. Move Right (ArrowRight)",
+      "2. Move Left (ArrowLeft)",
       "3. Split Horizontally (\")",
       "4. Kill Pane (x)",
       "5. Confirm (y)"
     ],
-    requiredActions: ['prefix', '%', 'prefix', 'ArrowRight', 'prefix', '"', 'prefix', 'x', 'y'],
+    requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', '"', 'prefix', 'x', 'y'],
     commandsCovered: ['Ctrl+b %', 'Ctrl+b "', 'Ctrl+b Arrows', 'Ctrl+b x', 'y'],
     hint: "Carefully follow the numbered sequence."
   },
   {
-    id: 19,
+    id: 18,
     title: "The Window Weaver",
-    description: "Coordinate across multiple windows and panes.",
+    description: "Coordinate across multiple windows and panes effortlessly.",
     objective: [
       "1. New Window (c)",
       "2. Split Vertically (%)",
@@ -288,9 +256,9 @@ export const LEVELS: Level[] = [
     hint: "Switch windows and split immediately."
   },
   {
-    id: 20,
+    id: 19,
     title: "Project Setup Boss",
-    description: "Setup logs, dev, and database console.",
+    description: "Setup logs, dev, and database console in record time.",
     objective: [
       "1. Split Vertically (%)",
       "2. Move Right (ArrowRight)",
@@ -303,19 +271,29 @@ export const LEVELS: Level[] = [
     hint: "Go fast! Muscle memory is forming."
   },
   {
-    id: 21,
+    id: 20,
     title: "Focus: Zoom Mode",
-    description: "'z' toggles 'zoom' for the current pane. It maximizes it to fill the whole window.",
-    objective: "Prefix then 'z' to toggle zoom.",
+    description: "z toggles zoom for the current pane, maximizing it to fill the whole window.",
+    objective: "Prefix then z to toggle zoom.",
     requiredActions: ['prefix', 'z'],
     commandsCovered: ['Ctrl+b z'],
-    hint: "Ctrl+b, then 'z'."
+    hint: "Ctrl+b, then 'z'.",
+    initialState: {
+      activeWindowIndex: 0,
+      windows: [{
+        id: 'w21', name: 'dev', activePaneId: 'p1',
+        layout: {
+          type: 'split', direction: 'vertical',
+          children: [{ type: 'pane', id: 'p1' }, { type: 'pane', id: 'p2' }]
+        }
+      }]
+    }
   },
   {
-    id: 22,
+    id: 21,
     title: "The Next Window",
-    description: "'n' switches to the next window. Faster than jumping by index.",
-    objective: "Prefix then 'n' to go to next window.",
+    description: "n switches to the next window. Faster than jumping by index manually.",
+    objective: "Prefix then n to go to next window.",
     requiredActions: ['prefix', 'n'],
     commandsCovered: ['Ctrl+b n'],
     hint: "Ctrl+b, then 'n'.",
@@ -328,64 +306,79 @@ export const LEVELS: Level[] = [
     }
   },
   {
-    id: 23,
+    id: 22,
     title: "Detaching Session",
-    description: "'d' detaches the current session. Tmux keeps it running in the background.",
-    objective: "Prefix then 'd' to detach.",
+    description: "d detaches the current session. Tmux keeps it running in the background.",
+    objective: "Prefix then d to detach.",
     requiredActions: ['prefix', 'd'],
     commandsCovered: ['Ctrl+b d'],
     hint: "Ctrl+b, then 'd'."
   },
   {
-    id: 24,
+    id: 23,
     title: "Enter Copy Mode",
-    description: "'[' enters copy mode, which allows you to scroll back through output.",
-    objective: "Prefix then '[' to enter copy mode.",
+    description: "[ enters copy mode, allowing you to scroll back through history.",
+    objective: "Prefix then [ to enter copy mode.",
     requiredActions: ['prefix', '['],
     commandsCovered: ['Ctrl+b ['],
-    hint: "Ctrl+b, then '['."
+    hint: "Ctrl+b, then '['.",
+    initialState: {
+      activeWindowIndex: 0,
+      windows: [{ id: 'w24', name: 'bash', layout: createPane('p24'), activePaneId: 'p24' }],
+      paneContents: { 'p24': ['Line 1: Log initialization...', 'Line 2: Server started on port 3000', 'Line 3: Database connected', 'Line 4: Incoming request GET /', 'Line 5: 200 OK', 'Line 6: Incoming request POST /login', 'Line 7: Auth successful', 'Line 8: User session created', 'Line 9: Cache miss for key: user_data', 'Line 10: DB Query took 45ms', 'Line 11: Rendered dashboard in 12ms', 'Line 12: Connection closed by remote', 'Line 13: Memory usage: 154MB', 'Line 14: CPU usage: 5%', 'Line 15: Waiting for input...'] }
+    }
   },
   {
-    id: 25,
+    id: 24,
     title: "Rename Window",
-    description: "',' lets you rename the current window for better organization.",
-    objective: "Prefix then ',' to rename window.",
+    description: ", lets you rename the current window for better organization.",
+    objective: "Prefix then , to rename window.",
     requiredActions: ['prefix', ','],
     commandsCovered: ['Ctrl+b ,'],
     hint: "Ctrl+b, then ','."
   },
   {
-    id: 26,
+    id: 25,
     title: "Show Clock",
-    description: "'t' shows a large digital clock in the center of your pane.",
-    objective: "Prefix then 't' to show clock.",
+    description: "t shows a large digital clock in the center of your active pane.",
+    objective: "Prefix then t to show clock.",
     requiredActions: ['prefix', 't'],
     commandsCovered: ['Ctrl+b t'],
     hint: "Ctrl+b, then 't'."
   },
   {
-    id: 27,
+    id: 26,
     title: "Identify Panes",
-    description: "'q' briefly displays pane index numbers over each pane.",
-    objective: "Prefix then 'q' to show indices.",
+    description: "q briefly displays pane index numbers over each pane for reference.",
+    objective: "Prefix then q to show indices.",
     requiredActions: ['prefix', 'q'],
     commandsCovered: ['Ctrl+b q'],
-    hint: "Ctrl+b, then 'q'."
+    hint: "Ctrl+b, then 'q'.",
+    initialState: {
+      activeWindowIndex: 0,
+      windows: [{
+        id: 'w27', name: 'bash', activePaneId: 'p1',
+        layout: {
+          type: 'split', direction: 'vertical',
+          children: [{ type: 'pane', id: 'p1' }, { type: 'pane', id: 'p2' }]
+        }
+      }]
+    }
   },
   {
-    id: 28,
+    id: 27,
     title: "Kill Window",
-    description: "'&' kills the current window and all its panes.",
-    objective: "Prefix then '&' and confirm with 'y'.",
+    description: "& kills the current window and all its panes entirely.",
+    objective: "Prefix then & and confirm with y.",
     requiredActions: ['prefix', '&', 'y'],
     commandsCovered: ['Ctrl+b &', 'y'],
     hint: "Ctrl+b, then Shift+7 (&)."
   },
   {
-    id: 29,
+    id: 28,
     title: "Rotate Panes",
-    description: "'o' cycles the focus to the next pane in the current window.",
-    objective: "Prefix then 'o' to rotate focus.",
+    description: "o cycles the focus to the next pane in the current window layout.",
+    objective: "Prefix then o to rotate focus.",
     requiredActions: ['prefix', 'o'],
     commandsCovered: ['Ctrl+b o'],
     hint: "Ctrl+b, then 'o'.",
@@ -401,19 +394,29 @@ export const LEVELS: Level[] = [
     }
   },
   {
-    id: 30,
+    id: 29,
     title: "Cycle Layouts",
-    description: "'Space' cycles through preset pane layouts (tiled, stacked, etc.).",
-    objective: "Prefix then 'Space' to cycle layout.",
+    description: "Space cycles through preset pane layouts like tiled or stacked.",
+    objective: "Prefix then Space to cycle layout.",
     requiredActions: ['prefix', ' '],
     commandsCovered: ['Ctrl+b Space'],
-    hint: "Ctrl+b, then Spacebar."
+    hint: "Ctrl+b, then Spacebar.",
+    initialState: {
+      activeWindowIndex: 0,
+      windows: [{
+        id: 'w30', name: 'dev', activePaneId: 'p1',
+        layout: {
+          type: 'split', direction: 'vertical',
+          children: [{ type: 'pane', id: 'p1' }, { type: 'pane', id: 'p2' }]
+        }
+      }]
+    }
   },
   {
-    id: 31,
+    id: 30,
     title: "Swap Panes",
-    description: "'{' and '}' swap the current pane with the previous/next one.",
-    objective: "Prefix then '{' to swap pane.",
+    description: "{ and } swap the current pane with the previous or next one.",
+    objective: "Prefix then { to swap pane.",
     requiredActions: ['prefix', '{'],
     commandsCovered: ['Ctrl+b {'],
     hint: "Ctrl+b, then Shift+[ ({).",
@@ -429,10 +432,19 @@ export const LEVELS: Level[] = [
     }
   },
   {
+    id: 31,
+    title: "New Session Intro",
+    description: "Sessions are top-level containers. You can create one with :new.",
+    objective: "Prefix then : to enter command mode.",
+    requiredActions: ['prefix', ':'],
+    commandsCovered: ['Ctrl+b :'],
+    hint: "Prepare to learn session management."
+  },
+  {
     id: 32,
     title: "List Sessions",
-    description: "'s' shows a list of all active tmux sessions to switch between.",
-    objective: "Prefix then 's' to list sessions.",
+    description: "s shows an interactive list of all active tmux sessions.",
+    objective: "Prefix then s to list sessions.",
     requiredActions: ['prefix', 's'],
     commandsCovered: ['Ctrl+b s'],
     hint: "Ctrl+b, then 's'."
@@ -440,8 +452,8 @@ export const LEVELS: Level[] = [
   {
     id: 33,
     title: "Find Window",
-    description: "'f' allows you to search for windows by name or content.",
-    objective: "Prefix then 'f' to find window.",
+    description: "f allows you to search for windows by name or content.",
+    objective: "Prefix then f to find window.",
     requiredActions: ['prefix', 'f'],
     commandsCovered: ['Ctrl+b f'],
     hint: "Ctrl+b, then 'f'."
@@ -449,8 +461,8 @@ export const LEVELS: Level[] = [
   {
     id: 34,
     title: "Move Window",
-    description: "'.' allows you to move the current window to a different index.",
-    objective: "Prefix then '.' to move window.",
+    description: ". allows you to move the current window to a different index.",
+    objective: "Prefix then . to move window.",
     requiredActions: ['prefix', '.'],
     commandsCovered: ['Ctrl+b .'],
     hint: "Ctrl+b, then '.'"
@@ -458,8 +470,8 @@ export const LEVELS: Level[] = [
   {
     id: 35,
     title: "Show Active Windows",
-    description: "'w' shows an interactive list of windows in the current session.",
-    objective: "Prefix then 'w' to list windows.",
+    description: "w shows an interactive list of all windows in the session.",
+    objective: "Prefix then w to list windows.",
     requiredActions: ['prefix', 'w'],
     commandsCovered: ['Ctrl+b w'],
     hint: "Ctrl+b, then 'w'."
@@ -467,8 +479,8 @@ export const LEVELS: Level[] = [
   {
     id: 36,
     title: "Rename Session",
-    description: "'$' allows you to rename the current session.",
-    objective: "Prefix then '$' to rename session.",
+    description: "$ allows you to rename the current session.",
+    objective: "Prefix then $ to rename session.",
     requiredActions: ['prefix', '$'],
     commandsCovered: ['Ctrl+b $'],
     hint: "Ctrl+b, then Shift+4 ($)."
@@ -476,11 +488,21 @@ export const LEVELS: Level[] = [
   {
     id: 37,
     title: "Switch Last Session",
-    description: "'L' switches back to the most recently active session.",
-    objective: "Prefix then 'L' to switch session.",
+    description: "L switches back to the most recently active session.",
+    objective: "Prefix then L to switch session.",
     requiredActions: ['prefix', 'L'],
     commandsCovered: ['Ctrl+b L'],
-    hint: "Ctrl+b, then Shift+L."
+    hint: "Ctrl+b, then Shift+L.",
+    initialState: {
+      activeWindowIndex: 0,
+      windows: [{
+        id: 'w38', name: 'main', activePaneId: 'p1',
+        layout: {
+          type: 'split', direction: 'vertical',
+          children: [{ type: 'pane', id: 'p1' }, { type: 'pane', id: 'p2' }]
+        }
+      }]
+    }
   },
   {
     id: 38,
@@ -494,12 +516,22 @@ export const LEVELS: Level[] = [
     ],
     requiredActions: ['prefix', 'z', 'prefix', 'c', 'prefix', 'p', 'prefix', 'z'],
     commandsCovered: ['Ctrl+b z', 'Ctrl+b c', 'Ctrl+b p'],
-    hint: "Zoom, New, Back, Unzoom."
+    hint: "Zoom, New, Back, Unzoom.",
+    initialState: {
+      activeWindowIndex: 0,
+      windows: [{
+        id: 'w39', name: 'main', activePaneId: 'p1',
+        layout: {
+          type: 'split', direction: 'vertical',
+          children: [{ type: 'pane', id: 'p1' }, { type: 'pane', id: 'p2' }]
+        }
+      }]
+    }
   },
   {
     id: 39,
     title: "Advanced Combo B",
-    description: "Organizing your workspace with renames and splits.",
+    description: "Organizing workspace dynamically with renames and splits.",
     objective: [
       "1. Rename Window (,)",
       "2. Split Vertically (%)",
@@ -513,7 +545,7 @@ export const LEVELS: Level[] = [
   {
     id: 40,
     title: "Ultimate Tmux Grandmaster",
-    description: "You have conquered all 40 levels of the Dojo. You are now a master of the terminal.",
+    description: "You have conquered all 40 levels of the Dojo.",
     objective: "Final Prefix activation.",
     requiredActions: ['prefix'],
     commandsCovered: ['All'],

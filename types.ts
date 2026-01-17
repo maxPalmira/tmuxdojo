@@ -30,8 +30,11 @@ export interface Level {
   initialState?: {
     windows: WindowType[];
     activeWindowIndex: number;
+    paneContents?: Record<string, string[]>;
   };
 }
+
+export type CommandBarMode = 'none' | 'command' | 'rename-window' | 'find-window' | 'move-window' | 'rename-session' | 'list-windows';
 
 export type AppState = {
   windows: WindowType[];
@@ -45,6 +48,7 @@ export type AppState = {
   isDetached: boolean;
   isRenamingWindow: boolean;
   isShowingIndices: boolean;
+  commandBarMode: CommandBarMode;
   currentLevel: number;
   actionProgressIndex: number;
   completedLevels: number[];
