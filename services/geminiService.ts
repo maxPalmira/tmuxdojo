@@ -1,10 +1,10 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
+// Always initialize a new GoogleGenAI instance inside the function to ensure the correct context.
 export async function getTutorFeedback(currentLevel: string, userAction: string, success: boolean) {
   try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `User is learning tmux. 

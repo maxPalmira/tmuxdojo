@@ -41,12 +41,15 @@ export type AppState = {
   activeWindowIndex: number;
   prefixActive: boolean;
   isConfirming: boolean;
+  confirmationTarget: 'pane' | 'window' | 'none';
   isZoomed: boolean;
-  isShowingClock: boolean;
+  activeClockPaneIds: string[];
   isListingSessions: boolean;
+  selectedWindowListIndex: number;
   isCopyMode: boolean;
   isDetached: boolean;
   isRenamingWindow: boolean;
+  renameBuffer: string;
   isShowingIndices: boolean;
   commandBarMode: CommandBarMode;
   currentLevel: number;
