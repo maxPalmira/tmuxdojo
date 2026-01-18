@@ -162,7 +162,7 @@ const App: React.FC = () => {
 
   const resetLevel = useCallback(() => {
     const newState = getInitialStateForLevel(state.currentLevel);
-    // Deep copy pane contents to ensure react sees the update
+    // Force a deep update of contents and reset all UI state (Zoom, Clocks)
     setPaneContents(JSON.parse(JSON.stringify(newState.paneContents)));
     if (indicesTimerRef.current) window.clearTimeout(indicesTimerRef.current);
     setState(prev => ({
@@ -227,7 +227,7 @@ const App: React.FC = () => {
           next.isListingSessions = false;
           next.commandBarMode = 'none';
           
-          // Specific Level 41 condition check: must select index 0
+          // Specific Level 41 condition: must select index 0
           const isLvl41 = currentLevelDef.id === 41;
           const meetsLvlRequirement = !isLvl41 || (isLvl41 && selectedIdx === 0);
 
@@ -656,7 +656,7 @@ const App: React.FC = () => {
           </div>
           <div>
             <h1 className="font-bold tracking-tight text-lg leading-none uppercase">TMUX DOJO</h1>
-            <p className="text-[9px] text-slate-400 uppercase tracking-widest font-semibold mt-1">Dojo V6.5</p>
+            <p className="text-[9px] text-slate-400 uppercase tracking-widest font-semibold mt-1">Dojo V6.7</p>
           </div>
         </div>
         
