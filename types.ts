@@ -25,7 +25,8 @@ export interface Level {
   description: string;
   objective: string | string[];
   requiredActions: string[];
-  commandsCovered: string[];
+  // Fix: Made optional to resolve multiple missing property errors in constants.ts
+  commandsCovered?: string[];
   hint: string;
   initialState?: {
     windows: WindowType[];

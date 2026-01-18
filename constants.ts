@@ -24,7 +24,6 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         description: "Welcome, initiate.\nThis dojo will burn tmux into your muscle memory.\nNo mouse.\nOnly keyboard.",
         objective: "Press [Space] to begin.",
         requiredActions: [],
-        commandsCovered: [],
         hint: "Focus the terminal and press [Space]."
       },
       {
@@ -33,44 +32,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         description: "Your lifeblood is the Prefix. [Ctrl + b].\nPractice activating it.",
         objective: "1. Prefix [Ctrl + b]",
         requiredActions: ['prefix'],
-        commandsCovered: ['Ctrl+b'],
         hint: "Hold Ctrl and tap b. Look for the 'PREFIX' indicator in the status bar."
-      },
-      {
-        id: 2,
-        title: "Prefix Refresh",
-        description: "Prefix commands must be re-armed for every action.\nPractice arming it twice.",
-        objective: ["1. Prefix [Ctrl + b]", "2. Prefix [Ctrl + b]"],
-        requiredActions: ['prefix', 'prefix'],
-        commandsCovered: ['Ctrl+b'],
-        hint: "Prefix, wait a beat, Prefix again."
-      },
-      {
-        id: 3,
-        title: "The Layout Space",
-        description: "The [Space] key cycles through layouts after a prefix.",
-        objective: ["1. Prefix [Ctrl + b]", "2. Toggle Layout [Space]"],
-        requiredActions: ['prefix', ' '],
-        commandsCovered: ['Ctrl+b Space'],
-        hint: "Prefix then Spacebar."
-      },
-      {
-        id: 4,
-        title: "Utility Entry",
-        description: "Open the clock to see the time.",
-        objective: ["1. Prefix [Ctrl + b]", "2. Clock [t]"],
-        requiredActions: ['prefix', 't'],
-        commandsCovered: ['Ctrl+b t'],
-        hint: "Prefix then 't' for time."
-      },
-      {
-        id: 5,
-        title: "Dojo Reset",
-        description: "To reset any level quickly, tap [d] twice in rapid succession.",
-        objective: ["1. Tap [d]", "2. Tap [d]"],
-        requiredActions: ['d', 'd'],
-        commandsCovered: ['d d'],
-        hint: "Rapid double-tap 'd'. This is a Dojo special command, not native tmux."
       }
     ]
   },
@@ -79,85 +41,84 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     title: "The Splits",
     levels: [
       {
-        id: 6,
+        id: 2,
         title: "Vertical Cut",
         description: "Divide the screen vertically.",
-        objective: ["1. Prefix [Ctrl + b]", "2. Split Vertically [%]"],
+        objective: ["1. Prefix [Ctrl + b]", "2. Vertical split [%]"],
         requiredActions: ['prefix', '%'],
-        commandsCovered: ['Ctrl+b %'],
         hint: "Hold [Ctrl], press [b], then release and press [%]."
       },
       {
-        id: 7,
+        id: 3,
         title: "Horizontal Cut",
         description: "Divide the screen horizontally.",
-        objective: ["1. Prefix [Ctrl + b]", "2. Split Horizontally [\"]"],
+        objective: ["1. Prefix [Ctrl + b]", "2. Horizontal split [\"]"],
         requiredActions: ['prefix', '"'],
-        commandsCovered: ['Ctrl+b "'],
         hint: "Prefix then [Shift] + ['] for [\"]"
       },
       {
-        id: 8,
+        id: 4,
         title: "The Cross",
-        description: "Create a 2x2 grid.",
-        objective: ["1. Split Vertically [%]", "2. Split Horizontally [\"]"],
+        description: "Create a 2x2 grid by splitting both ways.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]"],
         requiredActions: ['prefix', '%', 'prefix', '"'],
-        commandsCovered: ['Ctrl+b %', 'Ctrl+b "'],
         hint: "Prefix each command individually."
       },
       {
-        id: 9,
+        id: 5,
         title: "Kill Pane",
         description: "Close current pane with [x]. Confirm with [y].",
-        objective: ["1. Split Vertically [%]", "2. Kill Pane [x]", "3. Confirm [y]"],
+        objective: ["1. Vertical split [%]", "2. Kill pane [x]", "3. Confirm [y]"],
         requiredActions: ['prefix', '%', 'prefix', 'x', 'y'],
-        commandsCovered: ['Ctrl+b x'],
-        hint: "Prefix, x, then y to confirm. Pane closure is permanent."
+        hint: "Prefix, x, then y to confirm."
+      },
+      {
+        id: 6,
+        title: "Triple Column",
+        description: "Create three columns using two vertical splits.",
+        objective: ["1. Vertical split [%]", "2. Vertical split [%]"],
+        requiredActions: ['prefix', '%', 'prefix', '%'],
+        hint: "Splits divide the *active* pane."
+      },
+      {
+        id: 7,
+        title: "Double Row",
+        description: "Create a stack of three rows.",
+        objective: ["1. Horizontal split [\"]", "2. Horizontal split [\"]"],
+        requiredActions: ['prefix', '"', 'prefix', '"'],
+        hint: "Creates a stack of 3 rows."
+      },
+      {
+        id: 8,
+        title: "Split Symmetry",
+        description: "Horizontal split, move up, then horizontal split again.",
+        objective: ["1. Horizontal split [\"]", "2. Move up [ArrowUp]", "3. Horizontal split [\"]"],
+        requiredActions: ['prefix', '"', 'prefix', 'ArrowUp', 'prefix', '"'],
+        hint: "Move focus to the top pane before splitting it."
+      },
+      {
+        id: 9,
+        title: "Combo Breaker",
+        description: "Split vertical, move left, split horizontal.",
+        objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Horizontal split [\"]"],
+        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', '"'],
+        hint: "Focus management is vital."
       },
       {
         id: 10,
-        title: "Deep Split",
-        description: "Make three vertical stripes.",
-        objective: ["1. Split Vertically [%]", "2. Split Vertically [%]"],
-        requiredActions: ['prefix', '%', 'prefix', '%'],
-        commandsCovered: ['Ctrl+b %'],
-        hint: "Splits always divide the *active* pane."
+        title: "The Grid Master",
+        description: "Vertical, Horizontal, move right, Horizontal.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Move right [ArrowRight]", "4. Horizontal split [\"]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowRight', 'prefix', '"'],
+        hint: "Divide both sides of a vertical split."
       },
       {
         id: 11,
-        title: "Split Symmetry",
-        description: "Horizontal split, move down, then horizontal again.",
-        objective: ["1. Split Horizontally [\"]", "2. Move Down [ArrowDown]", "3. Split Horizontally [\"]"],
-        requiredActions: ['prefix', '"', 'prefix', 'ArrowDown', 'prefix', '"'],
-        commandsCovered: ['Ctrl+b "', 'Ctrl+b Arrows'],
-        hint: "Remember to re-prefix for navigation too."
-      },
-      {
-        id: 12,
-        title: "The Tower",
-        description: "Stack three horizontal panes.",
-        objective: ["1. Split Horizontally [\"]", "2. Split Horizontally [\"]"],
-        requiredActions: ['prefix', '"', 'prefix', '"'],
-        commandsCovered: ['Ctrl+b "'],
-        hint: "Divides current row."
-      },
-      {
-        id: 13,
-        title: "Cleanup Combo",
-        description: "Create a split then kill it immediately.",
-        objective: ["1. Split Vertically [%]", "2. Kill Pane [x]", "3. Confirm [y]"],
-        requiredActions: ['prefix', '%', 'prefix', 'x', 'y'],
-        commandsCovered: ['Ctrl+b %', 'Ctrl+b x'],
-        hint: "Fast re-prefixing is key."
-      },
-      {
-        id: 14,
-        title: "Quad Cut",
-        description: "2x2 via 3 splits.",
-        objective: ["1. Split Horizontally [\"]", "2. Split Vertically [%]", "3. Move Up [ArrowUp]", "4. Split Vertically [%]"],
-        requiredActions: ['prefix', '"', 'prefix', '%', 'prefix', 'ArrowUp', 'prefix', '%'],
-        commandsCovered: ['Ctrl+b %', 'Ctrl+b "', 'Ctrl+b Arrows'],
-        hint: "Split the top row, move down, split the bottom."
+        title: "Cleanup Flow",
+        description: "Split vertical, move left, then kill that pane.",
+        objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Kill pane [x]", "4. Confirm [y]"],
+        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'x', 'y'],
+        hint: "Practice splitting and cleaning up side panes."
       }
     ]
   },
@@ -166,72 +127,84 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     title: "Navigation",
     levels: [
       {
-        id: 15,
-        title: "Step Left",
-        description: "Navigate between panes.",
-        objective: ["1. Split Vertically [%]", "2. Move Left [ArrowLeft]"],
+        id: 12,
+        title: "Move Left",
+        description: "Move focus between panes.",
+        objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]"],
         requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft'],
-        commandsCovered: ['Ctrl+b Arrows'],
-        hint: "Arrows are the standard way to hop."
+        hint: "Prefix then arrow key."
+      },
+      {
+        id: 13,
+        title: "Move Up",
+        description: "Move focus up.",
+        objective: ["1. Horizontal split [\"]", "2. Move up [ArrowUp]"],
+        requiredActions: ['prefix', '"', 'prefix', 'ArrowUp'],
+        hint: "Navigation works in all 4 directions."
+      },
+      {
+        id: 14,
+        title: "The Circle",
+        description: "Cycle through panes with [o].",
+        objective: ["1. Vertical split [%]", "2. Next pane [o]"],
+        requiredActions: ['prefix', '%', 'prefix', 'o'],
+        hint: "o is a handy shortcut for small numbers of panes."
+      },
+      {
+        id: 15,
+        title: "The Rectangle",
+        description: "Navigate a 2x2 grid.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Move left [ArrowLeft]", "4. Move up [ArrowUp]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowLeft', 'prefix', 'ArrowUp'],
+        hint: "Use arrows to hop around."
       },
       {
         id: 16,
-        title: "The Circle",
-        description: "Navigate a grid.",
-        objective: [
-          "1. Split Vertically [%]", 
-          "2. Split Horizontally [\"]", 
-          "3. Move Left [ArrowLeft]",
-          "4. Move Right [ArrowRight]"
-        ],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowLeft', 'prefix', 'ArrowRight'],
-        commandsCovered: ['Ctrl+b Arrows'],
-        hint: "Arrows follow physical layout."
+        title: "Creation Order",
+        description: "Cycle through panes multiple times.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Next pane [o]", "4. Next pane [o]", "5. Next pane [o]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'o', 'prefix', 'o', 'prefix', 'o'],
+        hint: "Cycle order follows creation."
       },
       {
         id: 17,
-        title: "Next Pane",
-        description: "Cycle through panes with [o].",
-        objective: ["1. Split Vertically [%]", "2. Next Pane [o]"],
-        requiredActions: ['prefix', '%', 'prefix', 'o'],
-        commandsCovered: ['Ctrl+b o'],
-        hint: "o cycles in creation order."
+        title: "Up and Out",
+        description: "Horizontal, move up, vertical, move left.",
+        objective: ["1. Horizontal split [\"]", "2. Move up [ArrowUp]", "3. Vertical split [%]", "4. Move left [ArrowLeft]"],
+        requiredActions: ['prefix', '"', 'prefix', 'ArrowUp', 'prefix', '%', 'prefix', 'ArrowLeft'],
+        hint: "Climb then split."
       },
       {
         id: 18,
-        title: "Cycle Loop",
-        description: "Create 3 panes and cycle twice.",
-        objective: ["1. Split Vertically [%]", "2. Split Horizontally [\"]", "3. Cycle [o]", "4. Cycle [o]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'o', 'prefix', 'o'],
-        commandsCovered: ['Ctrl+b o'],
-        hint: "o is faster than arrows for many panes."
+        title: "Zig Zag",
+        description: "Vertical, horizontal, move left, move up, move right.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Move left [ArrowLeft]", "4. Move up [ArrowUp]", "5. Move right [ArrowRight]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowLeft', 'prefix', 'ArrowUp', 'prefix', 'ArrowRight'],
+        hint: "Maintain spatial awareness."
       },
       {
         id: 19,
-        title: "Up and Out",
-        description: "Split horizontal, move up, then right.",
-        objective: ["1. Split Horizontally [\"]", "2. Move Up [ArrowUp]", "3. Split Vertically [%]", "4. Move Right [ArrowRight]"],
-        requiredActions: ['prefix', '"', 'prefix', 'ArrowUp', 'prefix', '%', 'prefix', 'ArrowRight'],
-        commandsCovered: ['Ctrl+b Arrows', 'Ctrl+b %'],
-        hint: "Complex movement through the tree."
+        title: "Corner Jump",
+        description: "Create a grid and jump to the top-left.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Move up [ArrowUp]", "4. Move left [ArrowLeft]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowUp', 'prefix', 'ArrowLeft'],
+        hint: "Splitting moves focus. Navigate back to home."
       },
       {
         id: 20,
-        title: "Snake Path",
-        description: "Navigate a vertical stack using up and down.",
-        objective: ["1. Split Horizontally [\"]", "2. Split Horizontally [\"]", "3. Move Up [ArrowUp]", "4. Move Up [ArrowUp]"],
-        requiredActions: ['prefix', '"', 'prefix', '"', 'prefix', 'ArrowUp', 'prefix', 'ArrowUp'],
-        commandsCovered: ['Ctrl+b Arrows'],
-        hint: "Climb the tower."
+        title: "Back and Forth",
+        description: "Split, move away, move back.",
+        objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Move right [ArrowRight]"],
+        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'ArrowRight'],
+        hint: "Focus stays on the last moved pane."
       },
       {
         id: 21,
-        title: "Focus Shift",
-        description: "Split, move away, move back.",
-        objective: ["1. Split Vertically [%]", "2. Move Left [ArrowLeft]", "3. Move Right [ArrowRight]"],
-        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'ArrowRight'],
-        commandsCovered: ['Ctrl+b Arrows'],
-        hint: "Maintain spatial awareness."
+        title: "Split Cycle",
+        description: "Split, cycle, split, cycle.",
+        objective: ["1. Vertical split [%]", "2. Next pane [o]", "3. Horizontal split [\"]", "4. Next pane [o]"],
+        requiredActions: ['prefix', '%', 'prefix', 'o', 'prefix', '"', 'prefix', 'o'],
+        hint: "Mixing creation and cycle."
       }
     ]
   },
@@ -241,83 +214,83 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     levels: [
       {
         id: 22,
-        title: "Zoom State",
-        description: "Maximize a pane.",
-        objective: ["1. Split Vertically [%]", "2. Zoom Pane [z]"],
+        title: "Zoom",
+        description: "Maximize a pane to full screen.",
+        objective: ["1. Vertical split [%]", "2. Zoom [z]"],
         requiredActions: ['prefix', '%', 'prefix', 'z'],
-        commandsCovered: ['Ctrl+b z'],
-        hint: "z to zoom, z to unzoom."
+        hint: "Toggles full screen."
       },
       {
         id: 23,
-        title: "Time Check",
-        description: "Digital clock in pane. Any key exits clock mode.",
-        objective: [
-          "1. Split Vertically [%]",
-          "2. Show Clock [t]", 
-          "3. Hide Clock [Esc]"
-        ],
-        requiredActions: ['prefix', '%', 'prefix', 't', 'Escape'],
-        commandsCovered: ['Ctrl+b t', 'Escape'],
-        hint: "Escape is the safest way to leave utilities."
+        title: "Show Clock",
+        description: "Show a digital clock in the current pane.",
+        objective: ["1. Prefix [Ctrl + b]", "2. Show clock [t]", "3. Hide clock [Esc]"],
+        requiredActions: ['prefix', 't', 'Escape'],
+        hint: "Only [Esc] works to hide the clock while focused."
       },
       {
         id: 24,
         title: "Identify",
-        description: "Flash pane indices with [q].",
-        objective: [
-          "1. Split Vertically [%]", 
-          "2. Split Horizontally [\"]", 
-          "3. Flash Pane Numbers [q]"
-        ],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'q'],
-        commandsCovered: ['Ctrl+b q'],
-        hint: "Useful when you have too many panes."
+        description: "Flash pane numbers briefly.",
+        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]"],
+        requiredActions: ['prefix', '%', 'prefix', 'q'],
+        hint: "Numbers match creation order."
       },
       {
         id: 25,
         title: "Zoom & Check",
-        description: "Zoom a pane then show the clock.",
-        objective: ["1. Split Vertically [%]", "2. Zoom [z]", "3. Clock [t]", "4. Hide [Esc]"],
-        requiredActions: ['prefix', '%', 'prefix', 'z', 'prefix', 't', 'Escape'],
-        commandsCovered: ['Ctrl+b z', 'Ctrl+b t'],
-        hint: "Zoom doesn't block utilities."
+        description: "Zoom a pane, check time, then unzoom.",
+        objective: ["1. Vertical split [%]", "2. Zoom [z]", "3. Show clock [t]", "4. Zoom [z]"],
+        requiredActions: ['prefix', '%', 'prefix', 'z', 'prefix', 't', 'prefix', 'z'],
+        hint: "Zooming again returns to grid view."
       },
       {
         id: 26,
         title: "Multi-Clock",
         description: "Show clocks in two different panes.",
-        objective: ["1. Split Vertically [%]", "2. Clock [t]", "3. Move Right [ArrowRight]", "4. Clock [t]"],
-        requiredActions: ['prefix', '%', 'prefix', 't', 'prefix', 'ArrowRight', 'prefix', 't'],
-        commandsCovered: ['Ctrl+b t'],
-        hint: "Clocks stay visible until dismissed manually."
+        objective: ["1. Vertical split [%]", "2. Show clock [t]", "3. Move left [ArrowLeft]", "4. Show clock [t]"],
+        requiredActions: ['prefix', '%', 'prefix', 't', 'prefix', 'ArrowLeft', 'prefix', 't'],
+        hint: "Clocks are pane-specific."
       },
       {
         id: 27,
         title: "Identify Move",
-        description: "Flash indices then navigate to pane 1.",
-        objective: ["1. Split Vertically [%]", "2. Flash [q]", "3. Move Right [ArrowRight]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', 'prefix', 'ArrowRight'],
-        commandsCovered: ['Ctrl+b q', 'Ctrl+b Arrows'],
-        hint: "Observe the numbers, then move."
+        description: "Flash indices then move focus to the second pane.",
+        objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Flash pane numbers [q]", "4. Move right [ArrowRight]"],
+        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'q', 'prefix', 'ArrowRight'],
+        hint: "Move left first so you can move right into the second pane."
       },
       {
         id: 28,
-        title: "Big Picture",
-        description: "Split, split, zoom.",
-        objective: ["1. Split Vertically [%]", "2. Split Horizontally [\"]", "3. Zoom [z]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'z'],
-        commandsCovered: ['Ctrl+b z'],
-        hint: "Focus on one part of the grid."
+        title: "Triple Utility",
+        description: "Clock, Zoom, then Flash numbers.",
+        objective: ["1. Show clock [t]", "2. Zoom [z]", "3. Flash pane numbers [q]"],
+        requiredActions: ['prefix', 't', 'prefix', 'z', 'prefix', 'q'],
+        hint: "Execute in sequence."
       },
       {
         id: 29,
         title: "Utility Loop",
-        description: "Clock, hide, zoom, unzoom.",
-        objective: ["1. Clock [t]", "2. Hide [Esc]", "3. Zoom [z]", "4. Unzoom [z]"],
+        description: "Show clock, hide clock, zoom, then unzoom.",
+        objective: ["1. Show clock [t]", "2. Hide clock [Esc]", "3. Zoom [z]", "4. Unzoom [z]"],
         requiredActions: ['prefix', 't', 'Escape', 'prefix', 'z', 'prefix', 'z'],
-        commandsCovered: ['Ctrl+b t', 'Ctrl+b z'],
-        hint: "Speedrun utility keys."
+        hint: "Practice rapid utility usage."
+      },
+      {
+        id: 30,
+        title: "Zoom Navigation",
+        description: "Zoom, unzoom, then move focus.",
+        objective: ["1. Vertical split [%]", "2. Zoom [z]", "3. Unzoom [z]", "4. Move left [ArrowLeft]"],
+        requiredActions: ['prefix', '%', 'prefix', 'z', 'prefix', 'z', 'prefix', 'ArrowLeft'],
+        hint: "You can't move focus easily while zoomed."
+      },
+      {
+        id: 31,
+        title: "Utility Master",
+        description: "Clocks in multiple panes with navigation.",
+        objective: ["1. Vertical split [%]", "2. Show clock [t]", "3. Move left [ArrowLeft]", "4. Flash pane numbers [q]", "5. Show clock [t]"],
+        requiredActions: ['prefix', '%', 'prefix', 't', 'prefix', 'ArrowLeft', 'prefix', 'q', 'prefix', 't'],
+        hint: "The clocks persist until dismissed."
       }
     ]
   },
@@ -326,84 +299,84 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     title: "Windows",
     levels: [
       {
-        id: 30,
-        title: "New Window",
-        description: "Create a new window tab with [c].",
-        objective: ["1. New Window [c]"],
-        requiredActions: ['prefix', 'c'],
-        commandsCovered: ['Ctrl+b c'],
-        hint: "Check the status bar for a new tab."
-      },
-      {
-        id: 31,
-        title: "Cycling",
-        description: "Move between tabs with [n] and [p].",
-        objective: [
-          "1. New Window [c]",
-          "2. Previous Window [p]",
-          "3. Next Window [n]"
-        ],
-        requiredActions: ['prefix', 'c', 'prefix', 'p', 'prefix', 'n'],
-        commandsCovered: ['Ctrl+b n', 'Ctrl+b p'],
-        hint: "n for next, p for previous."
-      },
-      {
         id: 32,
-        title: "Kill Window",
-        description: "Kill whole window with [&]. Confirm with [y].",
-        objective: [
-          "1. New Window [c]",
-          "2. Kill Window [&]",
-          "3. Confirm [y]"
-        ],
-        requiredActions: ['prefix', 'c', 'prefix', '&', 'y'],
-        commandsCovered: ['Ctrl+b &'],
-        hint: "Closes the entire tab and all its panes."
+        title: "New Window",
+        description: "Create a new window tab.",
+        objective: ["1. Prefix [Ctrl + b]", "2. New window [c]"],
+        requiredActions: ['prefix', 'c'],
+        hint: "c for create."
       },
       {
         id: 33,
-        title: "Direct Jump 0",
-        description: "Jump to window 0 with [0].",
-        objective: ["1. New Window [c]", "2. Jump to 0 [0]"],
-        requiredActions: ['prefix', 'c', 'prefix', '0'],
-        commandsCovered: ['Ctrl+b <digit>'],
-        hint: "Prefix then the index number."
+        title: "Previous Window",
+        description: "Cycle to the previous window tab.",
+        objective: ["1. New window [c]", "2. Previous window [p]"],
+        requiredActions: ['prefix', 'c', 'prefix', 'p'],
+        hint: "p for previous."
       },
       {
         id: 34,
-        title: "Direct Jump 1",
-        description: "Jump to window 1 with [1].",
-        objective: ["1. New Window [c]", "2. Previous [p]", "3. Jump to 1 [1]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'p', 'prefix', '1'],
-        commandsCovered: ['Ctrl+b <digit>'],
-        hint: "Prefix then '1'."
+        title: "Next Window",
+        description: "Cycle to the next window tab.",
+        objective: ["1. New window [c]", "2. Previous window [p]", "3. Next window [n]"],
+        requiredActions: ['prefix', 'c', 'prefix', 'p', 'prefix', 'n'],
+        hint: "n for next."
       },
       {
         id: 35,
-        title: "Tab Management",
-        description: "Three windows, cycle backwards.",
-        objective: ["1. New Window [c]", "2. New Window [c]", "3. Previous [p]", "4. Previous [p]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'c', 'prefix', 'p', 'prefix', 'p'],
-        commandsCovered: ['Ctrl+b c', 'Ctrl+b p'],
-        hint: "Navigate your tab stack."
+        title: "Kill Window",
+        description: "Kill entire window tab.",
+        objective: ["1. New window [c]", "2. Kill window [&]", "3. Confirm [y]"],
+        requiredActions: ['prefix', 'c', 'prefix', '&', 'y'],
+        hint: "Closes current tab."
       },
       {
         id: 36,
-        title: "Window Cleanup",
-        description: "Create two, kill one.",
-        objective: ["1. New Window [c]", "2. Kill Window [&]", "3. Confirm [y]"],
-        requiredActions: ['prefix', 'c', 'prefix', '&', 'y'],
-        commandsCovered: ['Ctrl+b &'],
-        hint: "Keep your session tidy."
+        title: "Jump to 0",
+        description: "Jump to window index 0.",
+        objective: ["1. New window [c]", "2. Jump to 0 [0]"],
+        requiredActions: ['prefix', 'c', 'prefix', '0'],
+        hint: "Direct index jumping."
       },
       {
         id: 37,
-        title: "Fast Switching",
-        description: "n, n, p, n.",
-        objective: ["1. New Window [c]", "2. New Window [c]", "3. Next [n]", "4. Previous [p]", "5. Next [n]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'c', 'prefix', 'n', 'prefix', 'p', 'prefix', 'n'],
-        commandsCovered: ['Ctrl+b n', 'Ctrl+b p'],
-        hint: "Cycle through your open tasks."
+        title: "Tab Stacking",
+        description: "Manage multiple windows.",
+        objective: ["1. New window [c]", "2. New window [c]", "3. Jump to 0 [0]"],
+        requiredActions: ['prefix', 'c', 'prefix', 'c', 'prefix', '0'],
+        hint: "Windows are indexed 0, 1, 2..."
+      },
+      {
+        id: 38,
+        title: "Window Sweep",
+        description: "Create, move, then kill.",
+        objective: ["1. New window [c]", "2. Next window [n]", "3. Kill window [&]", "4. Confirm [y]"],
+        requiredActions: ['prefix', 'c', 'prefix', 'n', 'prefix', '&', 'y'],
+        hint: "Tab management flow."
+      },
+      {
+        id: 39,
+        title: "Jump Sequence",
+        description: "Fast switching between windows.",
+        objective: ["1. New window [c]", "2. Jump to 0 [0]", "3. Jump to 1 [1]"],
+        requiredActions: ['prefix', 'c', 'prefix', '0', 'prefix', '1'],
+        hint: "Fast switching."
+      },
+      {
+        id: 40,
+        title: "Window List",
+        description: "Open window list and select current.",
+        objective: ["1. New window [c]", "2. List windows [w]", "3. Select [Enter]"],
+        requiredActions: ['prefix', 'c', 'prefix', 'w', 'Enter'],
+        hint: "w opens a visual menu."
+      },
+      {
+        id: 41,
+        title: "Target Window 0",
+        description: "Open window list and select window 0.",
+        objective: ["1. New window [c]", "2. List windows [w]", "3. Move up [ArrowUp]", "4. Select [Enter]"],
+        requiredActions: ['prefix', 'c', 'prefix', 'w', 'ArrowUp', 'Enter'],
+        hint: "Focus window 0 in the list before hitting Enter."
       }
     ]
   },
@@ -412,83 +385,84 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     title: "Pro Windows",
     levels: [
       {
-        id: 38,
-        title: "Advanced Utilities",
-        description: "Window 1 split and clock.",
-        objective: [
-          "1. New Window [c]",
-          "2. Split Vertically [%]",
-          "3. Show Clock [t]"
-        ],
-        requiredActions: ['prefix', 'c', 'prefix', '%', 'prefix', 't'],
-        commandsCovered: ['Ctrl+b %', 'Ctrl+b t'],
-        hint: "Clock mode is window and pane-specific."
-      },
-      {
-        id: 39,
-        title: "Rename Window",
-        description: "Use [,] to rename. Type 'logs' and Enter.",
-        objective: [
-          "1. Rename Window [,]",
-          "2. Type 'logs' and hit [Enter]"
-        ],
-        requiredActions: ['prefix', ',', 'Enter'],
-        commandsCovered: ['Ctrl+b ,'],
-        hint: "Type the name exactly and press Enter."
-      },
-      {
-        id: 40,
-        title: "List Windows",
-        description: "Visual picker with [w]. Select current.",
-        objective: ["1. List Windows [w]", "2. Select [Enter]"],
-        requiredActions: ['prefix', 'w', 'Enter'],
-        commandsCovered: ['Ctrl+b w'],
-        hint: "Focus the list and press Enter."
-      },
-      {
-        id: 41,
-        title: "List & Select",
-        description: "Navigate window list.",
-        objective: ["1. New Window [c]", "2. List [w]", "3. Down [ArrowDown]", "4. Select [Enter]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'w', 'ArrowDown', 'Enter'],
-        commandsCovered: ['Ctrl+b w'],
-        hint: "Use arrows in the window list."
-      },
-      {
         id: 42,
-        title: "Rename Jump",
-        description: "Rename window, create new, jump back.",
-        objective: ["1. Rename [,]", "2. Type 'logs' + [Enter]", "3. New [c]", "4. Jump 0 [0]"],
-        requiredActions: ['prefix', ',', 'Enter', 'prefix', 'c', 'prefix', '0'],
-        commandsCovered: ['Ctrl+b ,', 'Ctrl+b c', 'Ctrl+b 0'],
-        hint: "Combine tab management with naming."
+        title: "Rename Window",
+        description: "Name your active window tab.",
+        objective: ["1. Rename window [,]", "2. Type 'logs' + [Enter]"],
+        requiredActions: ['prefix', ',', 'Enter'],
+        hint: "Name exactly 'logs'."
       },
       {
         id: 43,
-        title: "List Kill",
-        description: "List then kill.",
-        objective: ["1. New Window [c]", "2. List [w]", "3. Select [Enter]", "4. Kill [&]", "5. Confirm [y]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'w', 'Enter', 'prefix', '&', 'y'],
-        commandsCovered: ['Ctrl+b w', 'Ctrl+b &'],
-        hint: "Find it, then destroy it."
+        title: "Split Windows",
+        description: "Split panes in a new window.",
+        objective: ["1. New window [c]", "2. Vertical split [%]"],
+        requiredActions: ['prefix', 'c', 'prefix', '%'],
+        hint: "Each window has its own layout."
       },
       {
         id: 44,
-        title: "Naming Speed",
-        description: "Rename to 'srv', then 'dev'.",
-        objective: ["1. Rename [,]", "2. Type 'srv' + [Enter]", "3. Rename [,]", "4. Type 'dev' + [Enter]"],
-        requiredActions: ['prefix', ',', 'Enter', 'prefix', ',', 'Enter'],
-        commandsCovered: ['Ctrl+b ,'],
-        hint: "Renaming works anytime."
+        title: "Rename & Move",
+        description: "Identify then switch.",
+        objective: ["1. Rename window [,]", "2. Type 'srv' + [Enter]", "3. New window [c]"],
+        requiredActions: ['prefix', ',', 'Enter', 'prefix', 'c'],
+        hint: "Identify your tasks."
       },
       {
         id: 45,
-        title: "Window Sweep",
-        description: "Create, rename, kill.",
-        objective: ["1. New [c]", "2. Rename [,]", "3. Type 'temp' + [Enter]", "4. Kill [&]", "5. Confirm [y]"],
+        title: "Window Lifecycle",
+        description: "The full window management cycle.",
+        objective: ["1. New window [c]", "2. Rename window [,]", "3. Type 'tmp' + [Enter]", "4. Kill window [&]", "5. Confirm [y]"],
         requiredActions: ['prefix', 'c', 'prefix', ',', 'Enter', 'prefix', '&', 'y'],
-        commandsCovered: ['Ctrl+b c', 'Ctrl+b ,', 'Ctrl+b &'],
-        hint: "Pro tab lifecycle."
+        hint: "The full cycle."
+      },
+      {
+        id: 46,
+        title: "Cross Tab Split",
+        description: "Jump back to index 0 and split it.",
+        objective: ["1. New window [c]", "2. Jump to 0 [0]", "3. Vertical split [%]"],
+        requiredActions: ['prefix', 'c', 'prefix', '0', 'prefix', '%'],
+        hint: "Manage multiple contexts."
+      },
+      {
+        id: 47,
+        title: "List & Rename",
+        description: "Use the list to jump then rename.",
+        objective: ["1. New window [c]", "2. List windows [w]", "3. Move up [ArrowUp]", "4. Select [Enter]", "5. Rename window [,]"],
+        requiredActions: ['prefix', 'c', 'prefix', 'w', 'ArrowUp', 'Enter', 'prefix', ','],
+        hint: "Navigate then modify."
+      },
+      {
+        id: 48,
+        title: "Triple Tab Rename",
+        description: "Rename window 1 then jump back to rename window 0.",
+        objective: ["1. New window [c]", "2. Rename window [,]", "3. Type 'b' + [Enter]", "4. Jump to 0 [0]", "5. Rename window [,]", "6. Type 'a' + [Enter]"],
+        requiredActions: ['prefix', 'c', 'prefix', ',', 'Enter', 'prefix', '0', 'prefix', ',', 'Enter'],
+        hint: "Complex organization."
+      },
+      {
+        id: 49,
+        title: "Kill Cycle",
+        description: "Kill window then create a new one.",
+        objective: ["1. New window [c]", "2. Kill window [&]", "3. Confirm [y]", "4. New window [c]"],
+        requiredActions: ['prefix', 'c', 'prefix', '&', 'y', 'prefix', 'c'],
+        hint: "Fast re-creation."
+      },
+      {
+        id: 50,
+        title: "Tab Grid",
+        description: "Create a 2x2 grid in a new window tab.",
+        objective: ["1. New window [c]", "2. Vertical split [%]", "3. Horizontal split [\"]", "4. Move left [ArrowLeft]", "5. Horizontal split [\"]"],
+        requiredActions: ['prefix', 'c', 'prefix', '%', 'prefix', '"', 'prefix', 'ArrowLeft', 'prefix', '"'],
+        hint: "Complex layout in sub-window."
+      },
+      {
+        id: 51,
+        title: "Context Swap",
+        description: "Rename window 0 and window 1.",
+        objective: ["1. Rename window [,]", "2. Type 'dev' + [Enter]", "3. New window [c]", "4. Rename window [,]", "5. Type 'ops' + [Enter]"],
+        requiredActions: ['prefix', ',', 'Enter', 'prefix', 'c', 'prefix', ',', 'Enter'],
+        hint: "Tag your workspaces."
       }
     ]
   },
@@ -497,87 +471,84 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     title: "Advanced Panes",
     levels: [
       {
-        id: 46,
-        title: "Rotate Panes",
-        description: "Shift all panes clockwise with [Ctrl + o].",
-        objective: [
-          "1. Split Vertically [%]",
-          "2. Split Horizontally [\"]",
-          "3. Rotate Panes [Ctrl + o]"
-        ],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o'],
-        commandsCovered: ['Ctrl+b Ctrl+o'],
-        hint: "Must keep Ctrl held for 'o' after the prefix."
-      },
-      {
-        id: 47,
-        title: "Move Panes",
-        description: "Swap current pane left or right with [{] and [}].",
-        objective: [
-          "1. Split Vertically [%]",
-          "2. Move Pane Left [{]"
-        ],
-        requiredActions: ['prefix', '%', 'prefix', '{'],
-        commandsCovered: ['Ctrl+b {'],
-        hint: "Shift + [ for {"
-      },
-      {
-        id: 48,
-        title: "Toggle Layout",
-        description: "Cycle layouts with [Space].",
-        objective: [
-          "1. Split Vertically [%]",
-          "2. Split Horizontally [\"]",
-          "3. Toggle [Space]"
-        ],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', ' '],
-        commandsCovered: ['Ctrl+b Space'],
-        hint: "Tmux auto-arranges panes for you."
-      },
-      {
-        id: 49,
-        title: "Rotate Focus",
-        description: "Rotate and then change focus.",
-        objective: ["1. Split Vertically [%]", "2. Split Horizontally [\"]", "3. Rotate [Ctrl+o]", "4. Cycle Focus [o]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o', 'prefix', 'o'],
-        commandsCovered: ['Ctrl+b Ctrl+o', 'Ctrl+b o'],
-        hint: "Rotate doesn't move focus."
-      },
-      {
-        id: 50,
-        title: "Swap & Split",
-        description: "Swap left then split the new active.",
-        objective: ["1. Split Vertically [%]", "2. Swap [{]", "3. Split Horizontally [\"]"],
-        requiredActions: ['prefix', '%', 'prefix', '{', 'prefix', '"'],
-        commandsCovered: ['Ctrl+b {', 'Ctrl+b "'],
-        hint: "Moving content moves your workspace."
-      },
-      {
-        id: 51,
-        title: "Layout Bingo",
-        description: "Three splits and toggle layout twice.",
-        objective: ["1. Split [%]", "2. Split [%]", "3. Toggle [Space]", "4. Toggle [Space]"],
-        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', ' ', 'prefix', ' '],
-        commandsCovered: ['Ctrl+b Space'],
-        hint: "See the different grid styles."
-      },
-      {
         id: 52,
-        title: "Spiral Swap",
-        description: "Rotate then swap right.",
-        objective: ["1. Split [%]", "2. Split [\"]", "3. Rotate [Ctrl+o]", "4. Swap [}]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o', 'prefix', '}'],
-        commandsCovered: ['Ctrl+b Ctrl+o', 'Ctrl+b }'],
-        hint: "Control your pane positions."
+        title: "Rotate Panes",
+        description: "Cycle pane content clockwise.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Rotate panes [Ctrl + o]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o'],
+        hint: "Ctrl + o moves content clockwise."
       },
       {
         id: 53,
-        title: "Pane Transpose",
-        description: "Horizontal to vertical via rotate.",
-        objective: ["1. Split [%]", "2. Split [\"]", "3. Toggle [Space]", "4. Rotate [Ctrl+o]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', ' ', 'prefix', 'Control+o'],
-        commandsCovered: ['Ctrl+b Space', 'Ctrl+b Ctrl+o'],
-        hint: "Rearrange everything."
+        title: "Move Pane Left",
+        description: "Swap the active pane to the left.",
+        objective: ["1. Vertical split [%]", "2. Move pane left [{]"],
+        requiredActions: ['prefix', '%', 'prefix', '{'],
+        hint: "Shift + [."
+      },
+      {
+        id: 54,
+        title: "Move Pane Right",
+        description: "Swap the active pane to the right.",
+        objective: ["1. Vertical split [%]", "2. Move pane right [}]"],
+        requiredActions: ['prefix', '%', 'prefix', '}'],
+        hint: "Shift + ]."
+      },
+      {
+        id: 55,
+        title: "Toggle Layout",
+        description: "Cycle built-in layouts.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Toggle layout [Space]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', ' '],
+        hint: "Let tmux arrange panes."
+      },
+      {
+        id: 56,
+        title: "Rotate Focus",
+        description: "Rotate content then change focus.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Rotate panes [Ctrl+o]", "4. Next pane [o]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o', 'prefix', 'o'],
+        hint: "Positions change, focus stays."
+      },
+      {
+        id: 57,
+        title: "Swap & Split",
+        description: "Swap left then split the new active pane.",
+        objective: ["1. Vertical split [%]", "2. Move pane left [{]", "3. Vertical split [%]"],
+        requiredActions: ['prefix', '%', 'prefix', '{', 'prefix', '%'],
+        hint: "Content moves, you follow."
+      },
+      {
+        id: 58,
+        title: "Double Rotate",
+        description: "Cycle content two steps clockwise.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Rotate panes [Ctrl+o]", "4. Rotate panes [Ctrl+o]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o', 'prefix', 'Control+o'],
+        hint: "Clockwise cycle."
+      },
+      {
+        id: 59,
+        title: "Layout Bingo",
+        description: "Cycle layouts multiple times.",
+        objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Toggle layout [Space]", "4. Toggle layout [Space]"],
+        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', ' ', 'prefix', ' '],
+        hint: "See all modes."
+      },
+      {
+        id: 60,
+        title: "Rotate Cleanup",
+        description: "Rotate then kill.",
+        objective: ["1. Vertical split [%]", "2. Rotate panes [Ctrl+o]", "3. Kill pane [x]", "4. Confirm [y]"],
+        requiredActions: ['prefix', '%', 'prefix', 'Control+o', 'prefix', 'x', 'y'],
+        hint: "Shift then destroy."
+      },
+      {
+        id: 61,
+        title: "Advanced Loop",
+        description: "Swap and rotate sequence.",
+        objective: ["1. Vertical split [%]", "2. Move pane left [{]", "3. Move pane right [}]", "4. Rotate panes [Ctrl+o]"],
+        requiredActions: ['prefix', '%', 'prefix', '{', 'prefix', '}', 'prefix', 'Control+o'],
+        hint: "Pane juggling."
       }
     ]
   },
@@ -586,63 +557,52 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     title: "Index Jumps",
     levels: [
       {
-        id: 54,
+        id: 62,
         title: "Quick Jump",
-        description: "Flash numbers [q], then press digit to jump.",
-        objective: [
-          "1. Split Vertically [%]", 
-          "2. Split Horizontally [\"]", 
-          "3. Flash [q]",
-          "4. Jump 0 [0]"
-        ],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'q', '0'],
-        commandsCovered: ['Ctrl+b q <digit>'],
-        hint: "Must be fast after 'q'."
+        description: "Use the index jump shortcut.",
+        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]", "3. Jump to pane [0]"],
+        requiredActions: ['prefix', '%', 'prefix', 'q', '0'],
+        hint: "Must be fast."
       },
       {
-        id: 55,
+        id: 63,
+        title: "Jump to 1",
+        description: "Jump directly to pane index 1.",
+        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]", "3. Jump to pane [1]"],
+        requiredActions: ['prefix', '%', 'prefix', 'q', '1'],
+        hint: "Indices flash briefly."
+      },
+      {
+        id: 64,
         title: "Jump & Zoom",
-        description: "Jump to 1 and zoom.",
-        objective: ["1. Split [%]", "2. Flash [q]", "3. Jump 1 [1]", "4. Zoom [z]"],
+        description: "Jump index then maximize.",
+        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]", "3. Jump to pane [1]", "4. Zoom [z]"],
         requiredActions: ['prefix', '%', 'prefix', 'q', '1', 'prefix', 'z'],
-        commandsCovered: ['Ctrl+b q', 'Ctrl+b z'],
-        hint: "Navigate then maximize."
+        hint: "Teleport then focus."
       },
       {
-        id: 56,
+        id: 65,
         title: "Jump & Split",
-        description: "Jump back to 0 and split.",
-        objective: ["1. Split [%]", "2. Flash [q]", "3. Jump 1 [1]", "4. Flash [q]", "5. Jump 0 [0]", "6. Split [\"]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', '1', 'prefix', 'q', '0', 'prefix', '"'],
-        commandsCovered: ['Ctrl+b q', 'Ctrl+b "'],
-        hint: "Teleport around your workspace."
+        description: "Jump to 1 then split horizontal.",
+        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]", "3. Jump to pane [1]", "4. Horizontal split [\"]"],
+        requiredActions: ['prefix', '%', 'prefix', 'q', '1', 'prefix', '"'],
+        hint: "Jump and expand."
       },
       {
-        id: 57,
-        title: "Multi Jump",
-        description: "Jump 1, Jump 0, Jump 1.",
-        objective: ["1. Split [%]", "2. Jump 1 [1]", "3. Jump 0 [0]", "4. Jump 1 [1]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', '1', 'prefix', 'q', '0', 'prefix', 'q', '1'],
-        commandsCovered: ['Ctrl+b q'],
-        hint: "Flash indices for every jump."
+        id: 66,
+        title: "The Final Jump",
+        description: "Jump to pane 2 in a 3-pane layout.",
+        objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Flash pane numbers [q]", "4. Jump to pane [2]"],
+        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', 'q', '2'],
+        hint: "Indices are 0, 1, 2."
       },
       {
-        id: 58,
-        title: "Jump & Kill",
-        description: "Jump to 1 and kill it.",
-        objective: ["1. Split [%]", "2. Jump 1 [1]", "3. Kill [x]", "4. Confirm [y]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', '1', 'prefix', 'x', 'y'],
-        commandsCovered: ['Ctrl+b q', 'Ctrl+b x'],
-        hint: "Teleport and destroy."
-      },
-      {
-        id: 59,
-        title: "Dojo Master",
-        description: "Final Challenge: New Window, Split, Rename, Clock.",
-        objective: ["1. New [c]", "2. Split [%]", "3. Rename [,]", "4. Type 'final' + [Enter]", "5. Clock [t]"],
+        id: 67,
+        title: "Dojo Mastery",
+        description: "Demonstrate complete mastery of the flow.",
+        objective: ["1. New window [c]", "2. Vertical split [%]", "3. Rename window [,] + 'end' + [Enter]", "4. Show clock [t]"],
         requiredActions: ['prefix', 'c', 'prefix', '%', 'prefix', ',', 'Enter', 'prefix', 't'],
-        commandsCovered: ['Ctrl+b combo'],
-        hint: "You have mastered the Dojo. One last flow."
+        hint: "You are the Tmux Master."
       }
     ]
   }

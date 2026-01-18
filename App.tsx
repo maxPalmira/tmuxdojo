@@ -162,7 +162,8 @@ const App: React.FC = () => {
 
   const resetLevel = useCallback(() => {
     const newState = getInitialStateForLevel(state.currentLevel);
-    setPaneContents(newState.paneContents);
+    // Deep copy pane contents to ensure react sees the update
+    setPaneContents(JSON.parse(JSON.stringify(newState.paneContents)));
     if (indicesTimerRef.current) window.clearTimeout(indicesTimerRef.current);
     setState(prev => ({
       ...prev,
@@ -204,12 +205,11 @@ const App: React.FC = () => {
     setState(prev => {
       let next = { ...prev };
       const currentLevelDef = LEVELS.find(l => l.id === prev.currentLevel);
-      if (!currentLevelDef || currentLevelDef.id === 0) return prev;
+      if (!currentLevelDef || (currentLevelDef.id === 0 && action !== ' ' && action !== 'Enter')) return prev;
 
       let correctActionForLvl = false;
       const expectedAction = currentLevelDef.requiredActions[prev.actionProgressIndex];
 
-      // Main Window logic depends on having an active window
       const activeWin = next.windows[next.activeWindowIndex];
       const curPaneId = activeWin?.activePaneId;
 
@@ -222,15 +222,22 @@ const App: React.FC = () => {
           next.selectedWindowListIndex = (prev.selectedWindowListIndex + 1) % prev.windows.length;
           return next;
         } else if (action === 'Enter') {
-          next.activeWindowIndex = prev.selectedWindowListIndex;
+          const selectedIdx = prev.selectedWindowListIndex;
+          next.activeWindowIndex = selectedIdx;
           next.isListingSessions = false;
           next.commandBarMode = 'none';
           
-          if (expectedAction === 'Enter' || expectedAction === 'w') {
+          // Specific Level 41 condition check: must select index 0
+          const isLvl41 = currentLevelDef.id === 41;
+          const meetsLvlRequirement = !isLvl41 || (isLvl41 && selectedIdx === 0);
+
+          if ((expectedAction === 'Enter' || expectedAction === 'w') && meetsLvlRequirement) {
             next.actionProgressIndex += 1;
             if (next.actionProgressIndex >= currentLevelDef.requiredActions.length) {
               triggerSuccess(currentLevelDef.id, currentLevelDef.title);
             }
+          } else {
+            next.actionProgressIndex = 0;
           }
           return next;
         } else if (action === 'Escape' || action === 'q') {
@@ -363,9 +370,6 @@ const App: React.FC = () => {
         if (now - lastDKeyTime.current < 400) {
           lastDKeyTime.current = 0;
           resetLevel();
-          if (expectedAction === 'd') {
-             // In level 5 we explicitly test for d d
-          }
           return prev; 
         }
         lastDKeyTime.current = now;
@@ -521,7 +525,7 @@ const App: React.FC = () => {
       const currentIndex = LEVELS.findIndex(l => l.id === prev.currentLevel);
       const nextIdx = (currentIndex !== -1 && currentIndex < LEVELS.length - 1) ? LEVELS[currentIndex + 1].id : LEVELS[0].id;
       const newState = getInitialStateForLevel(nextIdx);
-      setPaneContents(newState.paneContents);
+      setPaneContents(JSON.parse(JSON.stringify(newState.paneContents)));
       if (indicesTimerRef.current) window.clearTimeout(indicesTimerRef.current);
       return {
         ...prev,
@@ -548,7 +552,7 @@ const App: React.FC = () => {
 
   const goToLevel = useCallback((idx: number) => {
     const newState = getInitialStateForLevel(idx);
-    setPaneContents(newState.paneContents);
+    setPaneContents(JSON.parse(JSON.stringify(newState.paneContents)));
     if (indicesTimerRef.current) window.clearTimeout(indicesTimerRef.current);
     setState(prev => ({
       ...prev,
@@ -585,14 +589,12 @@ const App: React.FC = () => {
       
       const key = e.key;
       
-      // Prefix Handling
       if (e.ctrlKey && key === 'b') {
         e.preventDefault();
         handleAction('prefix');
         return;
       }
 
-      // Rotate Panes (Control+o) Handling
       if (state.prefixActive && e.ctrlKey && key === 'o') {
         e.preventDefault();
         handleAction('Control+o');
@@ -654,7 +656,7 @@ const App: React.FC = () => {
           </div>
           <div>
             <h1 className="font-bold tracking-tight text-lg leading-none uppercase">TMUX DOJO</h1>
-            <p className="text-[9px] text-slate-400 uppercase tracking-widest font-semibold mt-1">Dojo V6.3</p>
+            <p className="text-[9px] text-slate-400 uppercase tracking-widest font-semibold mt-1">Dojo V6.5</p>
           </div>
         </div>
         
