@@ -788,30 +788,39 @@ const App: React.FC = () => {
                 </div>
               )}
 
-              {state.isIntroOpen && (
-                <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl z-[150] flex items-center justify-center p-8">
-                  <div className="text-center space-y-8 max-w-2xl w-full animate-in fade-in duration-700">
-                    <div className="inline-flex items-center justify-center p-8 bg-[#7aa2f7] rounded-full shadow-[0_0_50px_rgba(122,162,247,0.3)]">
-                      <Terminal size={60} className="text-[#1a1b26]" />
-                    </div>
-                    <div className="space-y-4">
-                      <h3 className="text-6xl font-black text-white italic tracking-tighter uppercase leading-none">MASTER THE TMUX</h3>
-                      <p className="text-[#7aa2f7] font-mono text-sm uppercase tracking-[0.4em] font-bold">Initiate Protocol Activated</p>
-                    </div>
-                    <div className="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-slate-300 text-lg font-medium whitespace-pre-line shadow-inner">
-                      {LEVELS[0].description}
-                    </div>
-                    <div className="flex flex-col items-center gap-5 pt-4">
-                      <button 
-                        onClick={advanceLevel}
-                        className="px-12 py-4 bg-transparent border-2 border-[#7aa2f7] text-[#7aa2f7] hover:bg-[#7aa2f7] hover:text-[#1a1b26] rounded-full text-sm font-black uppercase tracking-[0.4em] transition-all duration-300 animate-pulse"
-                      >
-                        Press SPACE to start
-                      </button>
+             {state.isIntroOpen && (
+              <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl z-[200] flex items-center justify-center animate-in fade-in zoom-in duration-300 p-8">
+                <div className="text-center space-y-8 max-w-4xl w-full">
+                  <div className="inline-flex items-center justify-center p-8 bg-[#7aa2f7] rounded-full"><Terminal size={60} className="text-[#1a1b26]" /></div>
+                  <div className="space-y-2">
+                    <h3 className="text-6xl font-black text-white italic tracking-tighter uppercase">MASTER THE TMUX</h3>
+                    <p className="text-[#7aa2f7] text-xl font-bold tracking-widest uppercase mb-12">Escape the cursor. Embrace the terminal.</p>
+                    <div className="space-y-1.5 pt-6 font-serif italic text-slate-400 text-[20px] leading-tight" >
+                    You are entering the Dojo of TMUX. <br/>
+
+Here, your mouse is useless. <br/>
+
+Your trackpad is a burden. <br/>
+
+Learn the shortcuts. <br/>
+
+Command the grid. <br/>
+
+Rule the panels.<br/>
+
+Control the screen.<br/>
+
+Bend reality.<br/>
+
+[Ctrl + B] is where it starts.
                     </div>
                   </div>
+                  <div className="flex flex-col items-center gap-5 pt-12">
+                    <div className="px-12 py-6 bg-[#1e293b] border-2 border-[#7aa2f7] rounded-full text-sm text-white font-black uppercase tracking-[0.4em] shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer" onClick={advanceLevel}>Press SPACE or ENTER to start</div>
+                  </div>
                 </div>
-              )}
+              </div>
+            )}
             </div>
 
             <div className={`h-8 flex items-center px-3 text-[10px] font-mono font-bold uppercase transition-colors duration-200 ${TERMINAL_COLORS.statusBar} flex-shrink-0`}>
