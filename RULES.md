@@ -1,3 +1,4 @@
+
 # Tmux Dojo: Level Management & Creation Rules
 
 This document outlines the standard rules and logical constraints for adding or modifying levels in the `constants.ts` file. Adhering to these ensures a consistent, bug-free, and high-quality user experience.
@@ -34,22 +35,24 @@ Before requiring a navigation action, the level must ensure the target destinati
 *   **Split Focus**: Remember that after a split command (`%` or `"`), tmux automatically moves focus to the **newly created** pane.
     *   *Example*: If you split vertically, you are now in the right pane. To split the left side, you **must** "Move left" first.
 
-## 3. Structural Integrity
+## 3. The Prefix Rule
+*   **The Prefix [Ctrl + b]** is not a legitimate task action in the `requiredActions` array EXCEPT for the first level of each group or a level that specifically introduces a brand new category of command for the first time.
+*   Muscle memory dictates that the prefix is implied. Don't clutter the progress bar with it unless it's a teaching moment.
+
+## 4. Toggle Zoom Rule
+*   **Toggle Zoom [z]** is only allowed as a task requirement if there is at least one split action performed before it in that level (either in `initialState` or as an action). A single pane cannot be zoomed.
+
+## 5. Jump Actions Rule
+*   Jump actions must be explicit. Use "Jump to window [0]" or "Jump to pane [0]" to avoid ambiguity between window switching and pane switching.
+
+## 6. Structural Integrity
 Each level in the `LEVEL_DATA` array must be a valid `Level` object.
 
 *   **Required Actions Sync**: The `requiredActions` array must match the key sequence exactly.
-    *   A single task line in `objective` might require multiple actions (e.g., "1. Vertical split [%]" requires `['prefix', '%']`).
 *   **Group Focus**: Each level group should introduce strictly 1 or 2 related commands.
-    *   *The Splits*: Vertical and Horizontal only.
-    *   *Navigation*: Arrows and cycling only.
 *   **Level IDs**: Maintain a strict incrementing integer sequence for `id`.
 
-## 4. Visual Feedback & Hints
+## 7. Visual Feedback & Hints
 *   **Descriptions**: Use the `description` field for flavor text and context.
 *   **Hints**: Use the `hint` field for technical details (e.g., "Shift + 7 for &").
 *   **Initial State**: If a level requires a complex starting layout, define it in `initialState`. Otherwise, the app defaults to a single window with one pane.
-
-## 5. Termination & Success
-*   The last action in the `requiredActions` array triggers the "LEVEL COMPLETE" screen.
-*   If a task involves typing (like renaming), ensure the `requiredActions` includes `Enter` to finalize the buffer.
-*   Confirmation prompts (like `x` or `&`) must be followed by `y` in the `requiredActions` array.

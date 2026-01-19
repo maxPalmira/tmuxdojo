@@ -13,6 +13,14 @@ export const TERMINAL_COLORS = {
   activeWindow: 'bg-[#7aa2f7] text-[#1a1b26]',
 };
 
+export const MEDAL_DATA: Record<string, { name: string; emoji: string; desc: string }> = {
+  splitter: { name: 'The Splitter', emoji: '🪓', desc: 'Perform 20 splits (vertical or horizontal) in a single session.' },
+  time_lord: { name: 'Time Lord', emoji: '🕒', desc: 'Invoke the digital clock [t] 10 times total.' },
+  identity_crisis: { name: 'Identity Crisis', emoji: '🆔', desc: 'Flash the pane indices [q] 15 times total.' },
+  window_shopper: { name: 'Window Shopper', emoji: '🪟', desc: 'Create 10 unique window tabs [c] total.' },
+  zero_reset: { name: 'Zero Reset', emoji: '🎯', desc: 'Complete 5 levels in a row without using the [d+d] reset shortcut.' }
+};
+
 export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
   {
     id: 0,
@@ -52,8 +60,8 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         id: 3,
         title: "Horizontal Cut",
         description: "Divide the screen horizontally.",
-        objective: ["1. Prefix [Ctrl + b]", "2. Horizontal split [\"]"],
-        requiredActions: ['prefix', '"'],
+        objective: ["1. Horizontal split [\"]"],
+        requiredActions: ['"'],
         hint: "Prefix then [Shift] + ['] for [\"]"
       },
       {
@@ -61,7 +69,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Double Split",
         description: "Vertical then Horizontal.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]"],
-        requiredActions: ['prefix', '%', 'prefix', '"'],
+        requiredActions: ['%', '"'],
         hint: "Each split divides the currently active pane."
       },
       {
@@ -69,7 +77,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "The Cross",
         description: "Horizontal then Vertical.",
         objective: ["1. Horizontal split [\"]", "2. Vertical split [%]"],
-        requiredActions: ['prefix', '"', 'prefix', '%'],
+        requiredActions: ['"', '%'],
         hint: "The second split happens in the bottom pane."
       },
       {
@@ -77,7 +85,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Triple Column",
         description: "Three columns using only vertical splits.",
         objective: ["1. Vertical split [%]", "2. Vertical split [%]"],
-        requiredActions: ['prefix', '%', 'prefix', '%'],
+        requiredActions: ['%', '%'],
         hint: "Creates three vertical stripes."
       },
       {
@@ -85,7 +93,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Stack O' Three",
         description: "Three rows using only horizontal splits.",
         objective: ["1. Horizontal split [\"]", "2. Horizontal split [\"]"],
-        requiredActions: ['prefix', '"', 'prefix', '"'],
+        requiredActions: ['"', '"'],
         hint: "Creates three horizontal rows."
       },
       {
@@ -93,7 +101,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Quad Column",
         description: "Divide into four columns.",
         objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Vertical split [%]"],
-        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', '%'],
+        requiredActions: ['%', '%', '%'],
         hint: "Keep splitting vertically."
       },
       {
@@ -101,7 +109,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Quad Row",
         description: "Divide into four rows.",
         objective: ["1. Horizontal split [\"]", "2. Horizontal split [\"]", "3. Horizontal split [\"]"],
-        requiredActions: ['prefix', '"', 'prefix', '"', 'prefix', '"'],
+        requiredActions: ['"', '"', '"'],
         hint: "Keep splitting horizontally."
       },
       {
@@ -109,7 +117,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Mixed Cascade",
         description: "A series of alternating splits.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Vertical split [%]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', '%'],
+        requiredActions: ['%', '"', '%'],
         hint: "Each new pane becomes the focus for the next split."
       },
       {
@@ -117,7 +125,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Grid Core",
         description: "Horizontal, Vertical, Horizontal.",
         objective: ["1. Horizontal split [\"]", "2. Vertical split [%]", "3. Horizontal split [\"]"],
-        requiredActions: ['prefix', '"', 'prefix', '%', 'prefix', '"'],
+        requiredActions: ['"', '%', '"'],
         hint: "Final split is in the bottom-right corner."
       }
     ]
@@ -131,7 +139,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Move Left",
         description: "Move focus between vertical panes.",
         objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]"],
-        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft'],
+        requiredActions: ['prefix', '%', 'ArrowLeft'],
         hint: "Focus starts in the right pane after splitting."
       },
       {
@@ -139,7 +147,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Move Up",
         description: "Move focus between horizontal panes.",
         objective: ["1. Horizontal split [\"]", "2. Move up [ArrowUp]"],
-        requiredActions: ['prefix', '"', 'prefix', 'ArrowUp'],
+        requiredActions: ['"', 'ArrowUp'],
         hint: "Focus starts in the bottom pane after splitting."
       },
       {
@@ -147,7 +155,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "The Circle",
         description: "Cycle focus with [o].",
         objective: ["1. Vertical split [%]", "2. Next pane [o]"],
-        requiredActions: ['prefix', '%', 'prefix', 'o'],
+        requiredActions: ['%', 'o'],
         hint: "o cycles through all available panes."
       },
       {
@@ -155,7 +163,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Back and Forth",
         description: "Navigate a vertical split.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Move left [ArrowLeft]", "4. Move right [ArrowRight]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowLeft', 'prefix', 'ArrowRight'],
+        requiredActions: ['%', '"', 'ArrowLeft', 'ArrowRight'],
         hint: "Return focus to the right-side panes."
       },
       {
@@ -163,7 +171,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Full Cycle",
         description: "Cycle through all panes.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Next pane [o]", "4. Next pane [o]", "5. Next pane [o]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'o', 'prefix', 'o', 'prefix', 'o'],
+        requiredActions: ['%', '"', 'o', 'o', 'o'],
         hint: "Cycling eventually returns you to the start."
       },
       {
@@ -171,7 +179,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "High Climb",
         description: "Navigate a vertical stack.",
         objective: ["1. Horizontal split [\"]", "2. Horizontal split [\"]", "3. Move up [ArrowUp]", "4. Move up [ArrowUp]"],
-        requiredActions: ['prefix', '"', 'prefix', '"', 'prefix', 'ArrowUp', 'prefix', 'ArrowUp'],
+        requiredActions: ['"', '"', 'ArrowUp', 'ArrowUp'],
         hint: "Climb from bottom to top."
       },
       {
@@ -179,15 +187,15 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Box Walk",
         description: "Navigate between columns.",
         objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Horizontal split [\"]", "4. Move right [ArrowRight]"],
-        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', '"', 'prefix', 'ArrowRight'],
+        requiredActions: ['%', 'ArrowLeft', '"', 'ArrowRight'],
         hint: "Move from bottom-left to full-right."
       },
       {
         id: 19,
         title: "Top Corner",
         description: "Navigate to the top-left.",
-        objective: ["1. Horizontal split [\"]", "2. Vertical split [%]", "3. Move up [ArrowUp]", "4. Move left [ArrowLeft]"],
-        requiredActions: ['prefix', '"', 'prefix', '%', 'prefix', 'ArrowUp', 'prefix', 'ArrowLeft'],
+        objective: ["1. Horizontal split [\"]", "2. Vertical split [%]", "3. Move up [ArrowUp]", "4. Move down [ArrowDown]"],
+        requiredActions: ['"', '%', 'ArrowUp', 'ArrowDown'],
         hint: "Jump across the layout boundaries."
       },
       {
@@ -195,7 +203,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Cross Jump",
         description: "Navigate complex quadrants.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Move left [ArrowLeft]", "4. Horizontal split [\"]", "5. Move up [ArrowUp]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowLeft', 'prefix', '"', 'prefix', 'ArrowUp'],
+        requiredActions: ['%', '"', 'ArrowLeft', '"', 'ArrowUp'],
         hint: "Split the left side then climb."
       },
       {
@@ -203,13 +211,13 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Deep Dive",
         description: "Navigate into a split and back out.",
         objective: ["1. Horizontal split [\"]", "2. Move up [ArrowUp]", "3. Vertical split [%]", "4. Move down [ArrowDown]"],
-        requiredActions: ['prefix', '"', 'prefix', 'ArrowUp', 'prefix', '%', 'prefix', 'ArrowDown'],
+        requiredActions: ['"', 'ArrowUp', '%', 'ArrowDown'],
         hint: "Move from top-right to bottom."
       }
     ]
   },
   {
-    id: 3,
+    id: 2,
     title: "Utilities",
     levels: [
       {
@@ -217,15 +225,15 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Toggle zoom",
         description: "Maximize a pane to full screen.",
         objective: ["1. Vertical split [%]", "2. Toggle zoom [z]"],
-        requiredActions: ['prefix', '%', 'prefix', 'z'],
+        requiredActions: ['prefix', '%', 'z'],
         hint: "z toggles full screen."
       },
       {
         id: 23,
         title: "Show Clock",
         description: "Display a digital clock.",
-        objective: ["1. Prefix [Ctrl + b]", "2. Show clock [t]", "3. Hide clock [Esc]"],
-        requiredActions: ['prefix', 't', 'Escape'],
+        objective: ["1. Show clock [t]", "2. Hide clock [Esc]"],
+        requiredActions: ['t', 'Escape'],
         hint: "Only Escape dismisses the clock UI."
       },
       {
@@ -233,7 +241,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Identify",
         description: "Flash pane numbers briefly.",
         objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q'],
+        requiredActions: ['%', 'q'],
         hint: "Numbers show creation order."
       },
       {
@@ -241,7 +249,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Zoom & Check",
         description: "Zoom, check time, then zoom to unzoom.",
         objective: ["1. Vertical split [%]", "2. Toggle zoom [z]", "3. Show clock [t]", "4. Toggle zoom [z]"],
-        requiredActions: ['prefix', '%', 'prefix', 'z', 'prefix', 't', 'prefix', 'z'],
+        requiredActions: ['%', 'z', 't', 'z'],
         hint: "Zoom is a toggle."
       },
       {
@@ -249,7 +257,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Multi-Clock",
         description: "Clocks in different panes.",
         objective: ["1. Vertical split [%]", "2. Show clock [t]", "3. Move left [ArrowLeft]", "4. Show clock [t]"],
-        requiredActions: ['prefix', '%', 'prefix', 't', 'prefix', 'ArrowLeft', 'prefix', 't'],
+        requiredActions: ['%', 't', 'ArrowLeft', 't'],
         hint: "Clocks remain until dismissed per pane."
       },
       {
@@ -257,7 +265,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Identify Move",
         description: "Flash numbers then move right.",
         objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Flash pane numbers [q]", "4. Move right [ArrowRight]"],
-        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'q', 'prefix', 'ArrowRight'],
+        requiredActions: ['%', 'ArrowLeft', 'q', 'ArrowRight'],
         hint: "Index 0 is left, Index 1 is right."
       },
       {
@@ -265,23 +273,23 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Zoom Navigation",
         description: "Zoom, unzoom, then move.",
         objective: ["1. Vertical split [%]", "2. Toggle zoom [z]", "3. Toggle zoom [z]", "4. Move left [ArrowLeft]"],
-        requiredActions: ['prefix', '%', 'prefix', 'z', 'prefix', 'z', 'prefix', 'ArrowLeft'],
+        requiredActions: ['%', 'z', 'z', 'ArrowLeft'],
         hint: "Unzoom is just another Toggle zoom [z] command."
       },
       {
         id: 29,
         title: "Utility Flow",
         description: "Clock, Hide, Zoom, Unzoom.",
-        objective: ["1. Show clock [t]", "2. Hide clock [Esc]", "3. Toggle zoom [z]", "4. Toggle zoom [z]"],
-        requiredActions: ['prefix', 't', 'Escape', 'prefix', 'z', 'prefix', 'z'],
-        hint: "Speedrun utility keys."
+        objective: ["1. Vertical split [%]", "2. Show clock [t]", "3. Hide clock [Esc]", "4. Toggle zoom [z]", "5. Toggle zoom [z]"],
+        requiredActions: ['%', 't', 'Escape', 'z', 'z'],
+        hint: "Speedrun utility keys. Note: Zoom requires a split screen."
       },
       {
         id: 30,
         title: "Identify Jump",
         description: "Flash indices and cycle.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Flash pane numbers [q]", "4. Next pane [o]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'q', 'prefix', 'o'],
+        requiredActions: ['%', '"', 'q', 'o'],
         hint: "Visualize then move."
       },
       {
@@ -289,7 +297,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Big Picture",
         description: "Zoom a specific side.",
         objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Toggle zoom [z]"],
-        requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'z'],
+        requiredActions: ['%', 'ArrowLeft', 'z'],
         hint: "Zoom focus follows active pane."
       }
     ]
@@ -311,7 +319,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Previous Window",
         description: "Cycle to the previous tab.",
         objective: ["1. New window [c]", "2. Previous window [p]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'p'],
+        requiredActions: ['c', 'p'],
         hint: "p is for previous."
       },
       {
@@ -319,23 +327,23 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Next Window",
         description: "Cycle to the next tab.",
         objective: ["1. New window [c]", "2. Previous window [p]", "3. Next window [n]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'p', 'prefix', 'n'],
+        requiredActions: ['c', 'p', 'n'],
         hint: "n is for next."
       },
       {
         id: 35,
-        title: "Jump to 0",
+        title: "Jump to window 0",
         description: "Jump using window index digits.",
-        objective: ["1. New window [c]", "2. Jump to 0 [0]"],
-        requiredActions: ['prefix', 'c', 'prefix', '0'],
+        objective: ["1. New window [c]", "2. Jump to window [0]"],
+        requiredActions: ['c', '0'],
         hint: "Prefix then a number jumps to that tab."
       },
       {
         id: 36,
-        title: "Jump to 1",
+        title: "Jump to window 1",
         description: "Jump back after switching.",
-        objective: ["1. New window [c]", "2. Previous window [p]", "3. Jump to 1 [1]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'p', 'prefix', '1'],
+        objective: ["1. New window [c]", "2. Previous window [p]", "3. Jump to window [1]"],
+        requiredActions: ['c', 'p', '1'],
         hint: "Direct jumping is faster than cycling."
       },
       {
@@ -343,23 +351,23 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Kill Window",
         description: "Destroy a window tab.",
         objective: ["1. New window [c]", "2. Kill window [&]", "3. Confirm [y]"],
-        requiredActions: ['prefix', 'c', 'prefix', '&', 'y'],
+        requiredActions: ['c', '&', 'y'],
         hint: "Shift + 7 for &."
       },
       {
         id: 38,
         title: "Window Stacking",
         description: "Create three windows.",
-        objective: ["1. New window [c]", "2. New window [c]", "3. Jump to 0 [0]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'c', 'prefix', '0'],
+        objective: ["1. New window [c]", "2. New window [c]", "3. Jump to window [0]"],
+        requiredActions: ['c', 'c', '0'],
         hint: "Keep track of your indices."
       },
       {
         id: 39,
         title: "Fast Switching",
         description: "Cycle and Jump combo.",
-        objective: ["1. New window [c]", "2. Next window [n]", "3. Jump to 0 [0]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'n', 'prefix', '0'],
+        objective: ["1. New window [c]", "2. Next window [n]", "3. Jump to window [0]"],
+        requiredActions: ['c', 'n', '0'],
         hint: "Switching flow."
       },
       {
@@ -367,7 +375,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Window List",
         description: "Open window list and select current.",
         objective: ["1. New window [c]", "2. List windows [w]", "3. Select [Enter]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'w', 'Enter'],
+        requiredActions: ['c', 'w', 'Enter'],
         hint: "w opens a visual picker."
       },
       {
@@ -375,7 +383,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "The Strategic Selector",
         description: "Renaming tabs makes list navigation powerful. Find your lost home.",
         objective: ["1. New window [c]", "2. Rename window [,] + 'dev' + [Enter]", "3. New window [c]", "4. List windows [w]", "5. Select window 'dev' [Enter]"],
-        requiredActions: ['prefix', 'c', 'prefix', ',', 'Enter', 'prefix', 'c', 'prefix', 'w', 'Enter'],
+        requiredActions: ['c', ',', 'Enter', 'c', 'w', 'Enter'],
         hint: "Rename your first new window to 'dev', create another, then select 'dev' in the list."
       }
     ]
@@ -397,7 +405,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Split Windows",
         description: "Panes within a new window.",
         objective: ["1. New window [c]", "2. Vertical split [%]"],
-        requiredActions: ['prefix', 'c', 'prefix', '%'],
+        requiredActions: ['c', '%'],
         hint: "Each window has its own layout state."
       },
       {
@@ -405,7 +413,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "The Context Sweep",
         description: "Create, rename, next.",
         objective: ["1. New window [c]", "2. Rename window [,]", "3. Next window [n]"],
-        requiredActions: ['prefix', 'c', 'prefix', ',', 'Enter', 'prefix', 'n'],
+        requiredActions: ['c', ',', 'Enter', 'n'],
         hint: "Organize as you go."
       },
       {
@@ -413,23 +421,23 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Window Lifecycle",
         description: "Create, Rename, then Kill.",
         objective: ["1. New window [c]", "2. Rename window [,]", "3. Type 'tmp' + [Enter]", "4. Kill window [&]", "5. Confirm [y]"],
-        requiredActions: ['prefix', 'c', 'prefix', ',', 'Enter', 'prefix', '&', 'y'],
+        requiredActions: ['c', ',', 'Enter', '&', 'y'],
         hint: "Manage ephemeral tabs."
       },
       {
         id: 46,
         title: "Jump Rename",
-        description: "Jump to 0 then rename.",
-        objective: ["1. New window [c]", "2. Jump to 0 [0]", "3. Rename window [,]"],
-        requiredActions: ['prefix', 'c', 'prefix', '0', 'prefix', ','],
+        description: "Jump to window 0 then rename.",
+        objective: ["1. New window [c]", "2. Jump to window [0]", "3. Rename window [,]"],
+        requiredActions: ['c', '0', ','],
         hint: "Jump and modify."
       },
       {
         id: 47,
         title: "List Select Rename",
-        description: "Select 0 from list then rename.",
+        description: "Select window 0 from list then rename.",
         objective: ["1. New window [c]", "2. List windows [w]", "3. Move up [ArrowUp]", "4. Select [Enter]", "5. Rename window [,]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'w', 'ArrowUp', 'Enter', 'prefix', ','],
+        requiredActions: ['c', 'w', 'ArrowUp', 'Enter', ','],
         hint: "Pick and rename."
       },
       {
@@ -437,15 +445,15 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Triple Tab Move",
         description: "Move through 3 named tabs.",
         objective: ["1. New [c]", "2. New [c]", "3. Previous [p]", "4. Previous [p]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'c', 'prefix', 'p', 'prefix', 'p'],
+        requiredActions: ['c', 'c', 'p', 'p'],
         hint: "Cycle backwards."
       },
       {
         id: 49,
         title: "Fast Cleanup",
-        description: "Kill, cycle, kill.",
+        description: "Kill window, cycle, kill window.",
         objective: ["1. New [c]", "2. Kill [&]", "3. Confirm [y]", "4. Kill [&]", "5. Confirm [y]"],
-        requiredActions: ['prefix', 'c', 'prefix', '&', 'y', 'prefix', '&', 'y'],
+        requiredActions: ['c', '&', 'y', '&', 'y'],
         hint: "Quick session clearing."
       },
       {
@@ -453,7 +461,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "The Work Context",
         description: "Split and Zoom in a new window.",
         objective: ["1. New [c]", "2. Vertical split [%]", "3. Toggle zoom [z]"],
-        requiredActions: ['prefix', 'c', 'prefix', '%', 'prefix', 'z'],
+        requiredActions: ['c', '%', 'z'],
         hint: "Focus in your new tab."
       },
       {
@@ -461,7 +469,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Naming Speed",
         description: "Rename window 0 to 'dev', rename 1 to 'ops'.",
         objective: ["1. Rename window [,]", "2. Type 'dev' + [Enter]", "3. New window [c]", "4. Rename window [,]", "5. Type 'ops' + [Enter]"],
-        requiredActions: ['prefix', ',', 'Enter', 'prefix', 'c', 'prefix', ',', 'Enter'],
+        requiredActions: [',', 'Enter', 'c', ',', 'Enter'],
         hint: "Tag your workspaces."
       }
     ]
@@ -474,8 +482,8 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         id: 52,
         title: "Rotate Panes",
         description: "Cycle pane content clockwise.",
-        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Rotate panes [Ctrl + o]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o'],
+        objective: ["1. Prefix [Ctrl + b]", "2. Vertical split [%]", "3. Horizontal split [\"]", "4. Rotate panes [Ctrl + o]"],
+        requiredActions: ['prefix', '%', '"', 'Control+o'],
         hint: "Ctrl + o shifts content clockwise."
       },
       {
@@ -483,7 +491,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Move Pane Left",
         description: "Swap current pane to the left.",
         objective: ["1. Vertical split [%]", "2. Move pane left [{]"],
-        requiredActions: ['prefix', '%', 'prefix', '{'],
+        requiredActions: ['%', '{'],
         hint: "Shift + [ for {."
       },
       {
@@ -491,7 +499,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Move Pane Right",
         description: "Swap current pane to the right.",
         objective: ["1. Vertical split [%]", "2. Move pane right [}]"],
-        requiredActions: ['prefix', '%', 'prefix', '}'],
+        requiredActions: ['%', '}'],
         hint: "Shift + ] for }."
       },
       {
@@ -499,7 +507,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Toggle Layout",
         description: "Cycle built-in layouts.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Toggle layout [Space]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', ' '],
+        requiredActions: ['%', '"', ' '],
         hint: "Spacebar cycles preset grid layouts."
       },
       {
@@ -507,7 +515,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Rotate Focus",
         description: "Rotate content then cycle focus.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Rotate panes [Ctrl+o]", "4. Next pane [o]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o', 'prefix', 'o'],
+        requiredActions: ['%', '"', 'Control+o', 'o'],
         hint: "Rotate changes positions, not focus."
       },
       {
@@ -515,7 +523,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Swap & Split",
         description: "Move pane then divide it.",
         objective: ["1. Vertical split [%]", "2. Move pane left [{]", "3. Vertical split [%]"],
-        requiredActions: ['prefix', '%', 'prefix', '{', 'prefix', '%'],
+        requiredActions: ['%', '{', '%'],
         hint: "Move your workspace."
       },
       {
@@ -523,7 +531,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Double Rotate",
         description: "Two-step rotation.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Rotate panes [Ctrl+o]", "4. Rotate panes [Ctrl+o]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'Control+o', 'prefix', 'Control+o'],
+        requiredActions: ['%', '"', 'Control+o', 'Control+o'],
         hint: "Cycle all content."
       },
       {
@@ -531,7 +539,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Layout Bingo",
         description: "Check different grid styles.",
         objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Toggle layout [Space]", "4. Toggle layout [Space]"],
-        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', ' ', 'prefix', ' '],
+        requiredActions: ['%', '%', ' ', ' '],
         hint: "Tmux finds the best fit."
       },
       {
@@ -539,7 +547,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Rotate Cleanup",
         description: "Rotate then kill the result.",
         objective: ["1. Vertical split [%]", "2. Rotate panes [Ctrl+o]", "3. Kill pane [x]", "4. Confirm [y]"],
-        requiredActions: ['prefix', '%', 'prefix', 'Control+o', 'prefix', 'x', 'y'],
+        requiredActions: ['%', 'Control+o', 'x', 'y'],
         hint: "Shift then destroy."
       },
       {
@@ -547,7 +555,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Advanced Loop",
         description: "Swap and rotate sequence.",
         objective: ["1. Vertical split [%]", "2. Move pane left [{]", "3. Move pane right [}]", "4. Rotate panes [Ctrl+o]"],
-        requiredActions: ['prefix', '%', 'prefix', '{', 'prefix', '}', 'prefix', 'Control+o'],
+        requiredActions: ['%', '{', '}', 'Control+o'],
         hint: "Pane juggling mastery."
       }
     ]
@@ -558,10 +566,10 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     levels: [
       {
         id: 62,
-        title: "Quick Jump 0",
+        title: "Quick Jump to pane 0",
         description: "Identify and jump to 0.",
-        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]", "3. Jump to pane [0]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', '0'],
+        objective: ["1. Prefix [Ctrl + b]", "2. Vertical split [%]", "3. Flash pane numbers [q]", "4. Jump to pane [0]"],
+        requiredActions: ['prefix', '%', 'q', '0'],
         hint: "Prefix, q, then digit."
       },
       {
@@ -569,15 +577,15 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Home Base Jump",
         description: "Teleport from the far side back to 0 in a triple layout.",
         objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Flash numbers [q]", "4. Jump to pane [0]"],
-        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', 'q', '0'],
+        requiredActions: ['%', '%', 'q', '0'],
         hint: "Jump across two vertical boundaries to the first pane."
       },
       {
         id: 64,
-        title: "Jump & Focus",
+        title: "Jump to pane 0 & Focus",
         description: "Teleport then maximize workspace.",
         objective: ["1. Vertical split [%]", "2. Flash numbers [q]", "3. Jump to pane [0]", "4. Toggle zoom [z]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', '0', 'prefix', 'z'],
+        requiredActions: ['%', 'q', '0', 'z'],
         hint: "Move from 1 to 0 and immediately zoom."
       },
       {
@@ -585,7 +593,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Remote Division",
         description: "Teleport focus specifically to divide a remote pane.",
         objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Move left [ArrowLeft]", "4. Move left [ArrowLeft]", "5. Flash numbers [q]", "6. Jump to pane [1]", "7. Horizontal split [\"]"],
-        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'ArrowLeft', 'prefix', 'q', '1', 'prefix', '"'],
+        requiredActions: ['%', '%', 'ArrowLeft', 'ArrowLeft', 'q', '1', '"'],
         hint: "Jump from the start (0) into the middle (1) then split it."
       },
       {
@@ -593,7 +601,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Diagonal Teleport",
         description: "Navigate a complex 2x2 grid by ID jump.",
         objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Move left [ArrowLeft]", "4. Horizontal split [\"]", "5. Flash numbers [q]", "6. Jump to pane [2]"],
-        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowLeft', 'prefix', '"', 'prefix', 'q', '2'],
+        requiredActions: ['%', '"', 'ArrowLeft', '"', 'q', '2'],
         hint: "Jump from the bottom-left (3) to the bottom-right (2)."
       },
       {
@@ -601,7 +609,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         title: "Dojo Mastery",
         description: "The ultimate Tmux flow.",
         objective: ["1. New window [c]", "2. Vertical split [%]", "3. Rename window [,] + 'end' + [Enter]", "4. Show clock [t]"],
-        requiredActions: ['prefix', 'c', 'prefix', '%', 'prefix', ',', 'Enter', 'prefix', 't'],
+        requiredActions: ['c', '%', ',', 'Enter', 't'],
         hint: "You have mastered the Dojo."
       }
     ]

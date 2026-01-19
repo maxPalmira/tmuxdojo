@@ -25,7 +25,6 @@ export interface Level {
   description: string;
   objective: string | string[];
   requiredActions: string[];
-  // Fix: Made optional to resolve multiple missing property errors in constants.ts
   commandsCovered?: string[];
   hint: string;
   initialState?: {
@@ -36,6 +35,22 @@ export interface Level {
 }
 
 export type CommandBarMode = 'none' | 'command' | 'rename-window' | 'find-window' | 'move-window' | 'rename-session' | 'list-windows';
+
+export type UserProfile = {
+  id: string;
+  username: string;
+  avatar_url?: string;
+  medals: string[];
+  joined_at: string;
+};
+
+export type GlobalStats = {
+  rank: number;
+  username: string;
+  masteryPoints: number;
+  memoryPoints: number;
+  medals: string[];
+};
 
 export type AppState = {
   windows: WindowType[];
@@ -55,10 +70,24 @@ export type AppState = {
   commandBarMode: CommandBarMode;
   currentLevel: number;
   actionProgressIndex: number;
-  completedLevels: number[];
+  completedLevels: number[]; // List of level IDs completed at least once
+  completionCounts: Record<number, number>; // ID -> total completions
   inputHistory: string[];
   feedback: {
     message: string;
     type: 'success' | 'error' | 'info';
   } | null;
+  // New expansion states
+  user: any | null;
+  profile: UserProfile | null;
+  stats: {
+    sessionSplits: number;
+    totalClocks: number;
+    totalFlashes: number;
+    totalWindows: number;
+    zeroResetStreak: number;
+  };
+  medalsEarned: string[];
+  isLeaderboardOpen: boolean;
+  isProfileOpen: boolean;
 };
