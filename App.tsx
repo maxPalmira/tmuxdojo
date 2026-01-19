@@ -119,13 +119,18 @@ const KeyCap: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 const introSubtitle = "Escape the cursor. Embrace the terminal.";
 const introBody = [
   "You are entering the Dojo of TMUX.",
-  "Here, your mouse is useless. Your trackpad is a burden.",
-  "Learn the shortcuts. Master the windows. Command the screen.",
-  "The prefix is your life: Ctrl + b is the key to everything."
+  "Here, your mouse is useless.",
+  "Your trackpad is a burden.",
+  "Learn the shortcuts.",
+  "Command the grid.",
+  "Rule the panels.",
+  "Control the screen.",
+  "Bend reality.",
+  "[Ctrl + B] is where it starts."
 ];
 
 const App: React.FC = () => {
-  const [state, setState] = useState<AppState & { isPendingSuccess: boolean; isIntroOpen: boolean }>({
+  const [state, setState] = useState<AppState & { isPendingSuccess: boolean; isIntroOpen: boolean; isDirty: boolean }>({
     windows: [],
     activeWindowIndex: 0,
     prefixActive: false,
@@ -148,6 +153,7 @@ const App: React.FC = () => {
     feedback: null,
     isPendingSuccess: false,
     isIntroOpen: true,
+    isDirty: false,
   });
 
   const [lastKeyPressed, setLastKeyPressed] = useState<string>("");
@@ -162,7 +168,6 @@ const App: React.FC = () => {
 
   const resetLevel = useCallback(() => {
     const newState = getInitialStateForLevel(state.currentLevel);
-    // Force a deep update of contents and reset all UI state (Zoom, Clocks)
     setPaneContents(JSON.parse(JSON.stringify(newState.paneContents)));
     if (indicesTimerRef.current) window.clearTimeout(indicesTimerRef.current);
     setState(prev => ({
@@ -184,6 +189,8 @@ const App: React.FC = () => {
       isRenamingWindow: false,
       renameBuffer: '',
       isShowingIndices: false,
+      isIntroOpen: state.currentLevel === 0,
+      isDirty: false,
     }));
   }, [state.currentLevel]);
 
@@ -215,11 +222,15 @@ const App: React.FC = () => {
 
       // Window List Navigation
       if (prev.isListingSessions) {
-        if (action === 'ArrowUp') {
-          next.selectedWindowListIndex = (prev.selectedWindowListIndex - 1 + prev.windows.length) % prev.windows.length;
-          return next;
-        } else if (action === 'ArrowDown') {
-          next.selectedWindowListIndex = (prev.selectedWindowListIndex + 1) % prev.windows.length;
+        if (action === 'ArrowUp' || action === 'ArrowDown') {
+          const dir = action === 'ArrowUp' ? -1 : 1;
+          next.selectedWindowListIndex = (prev.selectedWindowListIndex + dir + prev.windows.length) % prev.windows.length;
+          
+          if (action === expectedAction) {
+            next.actionProgressIndex += 1;
+          } else if (expectedAction !== 'Enter' && expectedAction !== 'w') {
+            next.actionProgressIndex = 0;
+          }
           return next;
         } else if (action === 'Enter') {
           const selectedIdx = prev.selectedWindowListIndex;
@@ -227,9 +238,8 @@ const App: React.FC = () => {
           next.isListingSessions = false;
           next.commandBarMode = 'none';
           
-          // Specific Level 41 condition: must select index 0
           const isLvl41 = currentLevelDef.id === 41;
-          const meetsLvlRequirement = !isLvl41 || (isLvl41 && selectedIdx === 0);
+          const meetsLvlRequirement = !isLvl41 || (isLvl41 && selectedIdx === 1);
 
           if ((expectedAction === 'Enter' || expectedAction === 'w') && meetsLvlRequirement) {
             next.actionProgressIndex += 1;
@@ -292,9 +302,10 @@ const App: React.FC = () => {
         }
       }
 
-      // 3. Confirmation Logic
+      // 3. Confirmation Logic (Killing panes/windows is structural)
       if (prev.isConfirming) {
         if (action === 'y') {
+          next.isDirty = true; // State change
           if (prev.confirmationTarget === 'pane') {
             const winIdx = next.activeWindowIndex;
             const win = { ...next.windows[winIdx] };
@@ -332,9 +343,10 @@ const App: React.FC = () => {
         }
       }
 
-      // 4. Renaming Logic
+      // 4. Renaming Logic (Structural on Enter)
       if (prev.isRenamingWindow) {
         if (action === 'Enter') {
+          next.isDirty = true; // State change
           const winIdx = next.activeWindowIndex;
           const finalName = next.renameBuffer || 'bash';
           next.windows[winIdx] = { ...next.windows[winIdx], name: finalName };
@@ -393,6 +405,7 @@ const App: React.FC = () => {
         if (action === expectedAction) correctActionForLvl = true;
 
         if (action === '%') {
+          next.isDirty = true; // Structural change
           const newPaneId = `p-${Date.now()}`;
           const splitNode = (node: LayoutNode, targetId: string): LayoutNode => {
             if (node.type === 'pane' && node.id === targetId) {
@@ -406,6 +419,7 @@ const App: React.FC = () => {
           currentActiveWin.layout = splitNode(currentActiveWin.layout, currentActiveWin.activePaneId);
           currentActiveWin.activePaneId = newPaneId;
         } else if (action === '"') {
+          next.isDirty = true; // Structural change
           const newPaneId = `p-${Date.now()}`;
           const splitNode = (node: LayoutNode, targetId: string): LayoutNode => {
             if (node.type === 'pane' && node.id === targetId) {
@@ -418,6 +432,44 @@ const App: React.FC = () => {
           };
           currentActiveWin.layout = splitNode(currentActiveWin.layout, currentActiveWin.activePaneId);
           currentActiveWin.activePaneId = newPaneId;
+        } else if (action === 'c') {
+          next.isDirty = true; // Structural change
+          const newWinId = `win-${Date.now()}`;
+          const newPaneId = `p-${Date.now()}`;
+          next.windows.push({ id: newWinId, name: 'bash', layout: createPane(newPaneId), activePaneId: newPaneId });
+          next.activeWindowIndex = next.windows.length - 1;
+        } else if (action === 'Control+o') {
+          next.isDirty = true; // Structural change
+          const flatIds = getFlatPanes(currentActiveWin.layout);
+          if (flatIds.length > 1) {
+            const rotatedIds = [flatIds[flatIds.length - 1], ...flatIds.slice(0, flatIds.length - 1)];
+            const oldIndex = flatIds.indexOf(currentActiveWin.activePaneId);
+            const newActiveId = rotatedIds[oldIndex];
+            currentActiveWin.layout = rotateLayoutPanes(currentActiveWin.layout, rotatedIds, { val: 0 });
+            currentActiveWin.activePaneId = newActiveId;
+          }
+        } else if (action === '{' || action === '}') {
+          next.isDirty = true; // Structural change
+          const flatIds = getFlatPanes(currentActiveWin.layout);
+          const currentIdx = flatIds.indexOf(currentActiveWin.activePaneId);
+          if (flatIds.length > 1) {
+            let swapIdx = action === '{' ? currentIdx - 1 : currentIdx + 1;
+            if (swapIdx < 0) swapIdx = flatIds.length - 1;
+            if (swapIdx >= flatIds.length) swapIdx = 0;
+            const newIds = [...flatIds];
+            [newIds[currentIdx], newIds[swapIdx]] = [newIds[swapIdx], newIds[currentIdx]];
+            currentActiveWin.layout = rotateLayoutPanes(currentActiveWin.layout, newIds, { val: 0 });
+            currentActiveWin.activePaneId = flatIds[currentIdx]; 
+          }
+        } else if (action === ' ' || action === 'Spacebar') {
+          next.isDirty = true; // Structural change
+          const toggle = (node: LayoutNode): LayoutNode => {
+            if (node.type === 'split') {
+              return { ...node, direction: node.direction === 'vertical' ? 'horizontal' : 'vertical' };
+            }
+            return node;
+          };
+          currentActiveWin.layout = toggle(currentActiveWin.layout);
         } else if (action.startsWith('Arrow')) {
           const nextId = findTargetPaneId(currentActiveWin.layout, currentActiveWin.activePaneId, action);
           if (nextId) currentActiveWin.activePaneId = nextId;
@@ -433,11 +485,6 @@ const App: React.FC = () => {
           indicesTimerRef.current = window.setTimeout(() => {
             setState(s => ({ ...s, isShowingIndices: false }));
           }, 3000);
-        } else if (action === 'c') {
-          const newWinId = `win-${Date.now()}`;
-          const newPaneId = `p-${Date.now()}`;
-          next.windows.push({ id: newWinId, name: 'bash', layout: createPane(newPaneId), activePaneId: newPaneId });
-          next.activeWindowIndex = next.windows.length - 1;
         } else if (action === 'n') {
           next.activeWindowIndex = (next.activeWindowIndex + 1) % next.windows.length;
         } else if (action === 'p') {
@@ -463,39 +510,10 @@ const App: React.FC = () => {
           next.isListingSessions = true;
           next.selectedWindowListIndex = next.activeWindowIndex;
           next.commandBarMode = 'list-windows';
-        } else if (action === 'Control+o') {
-          const flatIds = getFlatPanes(currentActiveWin.layout);
-          if (flatIds.length > 1) {
-            const rotatedIds = [flatIds[flatIds.length - 1], ...flatIds.slice(0, flatIds.length - 1)];
-            const oldIndex = flatIds.indexOf(currentActiveWin.activePaneId);
-            const newActiveId = rotatedIds[oldIndex];
-            currentActiveWin.layout = rotateLayoutPanes(currentActiveWin.layout, rotatedIds, { val: 0 });
-            currentActiveWin.activePaneId = newActiveId;
-          }
-        } else if (action === '{' || action === '}') {
-          const flatIds = getFlatPanes(currentActiveWin.layout);
-          const currentIdx = flatIds.indexOf(currentActiveWin.activePaneId);
-          if (flatIds.length > 1) {
-            let swapIdx = action === '{' ? currentIdx - 1 : currentIdx + 1;
-            if (swapIdx < 0) swapIdx = flatIds.length - 1;
-            if (swapIdx >= flatIds.length) swapIdx = 0;
-            const newIds = [...flatIds];
-            [newIds[currentIdx], newIds[swapIdx]] = [newIds[swapIdx], newIds[currentIdx]];
-            currentActiveWin.layout = rotateLayoutPanes(currentActiveWin.layout, newIds, { val: 0 });
-            currentActiveWin.activePaneId = flatIds[currentIdx]; 
-          }
         } else if (action === 'o') {
           const flat = getFlatPanes(currentActiveWin.layout);
           const idx = flat.indexOf(currentActiveWin.activePaneId);
           currentActiveWin.activePaneId = flat[(idx + 1) % flat.length];
-        } else if (action === ' ' || action === 'Spacebar') {
-          const toggle = (node: LayoutNode): LayoutNode => {
-            if (node.type === 'split') {
-              return { ...node, direction: node.direction === 'vertical' ? 'horizontal' : 'vertical' };
-            }
-            return node;
-          };
-          currentActiveWin.layout = toggle(currentActiveWin.layout);
         }
 
         if (correctActionForLvl) {
@@ -538,7 +556,7 @@ const App: React.FC = () => {
         isZoomed: false,
         activeClockPaneIds: [],
         isShowingIndices: false,
-        isIntroOpen: false,
+        isIntroOpen: nextIdx === 0,
         isConfirming: false,
         confirmationTarget: 'none' as 'none',
         commandBarMode: 'none' as CommandBarMode,
@@ -546,6 +564,7 @@ const App: React.FC = () => {
         selectedWindowListIndex: 0,
         isRenamingWindow: false,
         renameBuffer: '',
+        isDirty: false,
       };
     });
   }, []);
@@ -565,7 +584,7 @@ const App: React.FC = () => {
       isZoomed: false,
       activeClockPaneIds: [],
       isShowingIndices: false,
-      isIntroOpen: false,
+      isIntroOpen: idx === 0,
       isConfirming: false,
       confirmationTarget: 'none' as 'none',
       commandBarMode: 'none' as CommandBarMode,
@@ -573,6 +592,7 @@ const App: React.FC = () => {
       selectedWindowListIndex: 0,
       isRenamingWindow: false,
       renameBuffer: '',
+      isDirty: false,
     }));
     setShowTOC(false);
   }, []);
@@ -656,7 +676,7 @@ const App: React.FC = () => {
           </div>
           <div>
             <h1 className="font-bold tracking-tight text-lg leading-none uppercase">TMUX DOJO</h1>
-            <p className="text-[9px] text-slate-400 uppercase tracking-widest font-semibold mt-1">Dojo V6.7</p>
+            <p className="text-[9px] text-slate-400 uppercase tracking-widest font-semibold mt-1">Dojo V7.0</p>
           </div>
         </div>
         
@@ -808,11 +828,13 @@ const App: React.FC = () => {
                     </div>
                   )}
                   
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[70]">
-                      <button onClick={resetLevel} className="text-white transition-all flex items-center gap-2 text-[11px] font-black uppercase bg-[#ef4444] px-6 py-2 rounded-full border border-white/20 hover:bg-[#dc2626] hover:scale-110 active:scale-95 shadow-md backdrop-blur-sm">
-                        <RotateCcw size={14} /> Reset Level [d + d]
-                      </button>
-                  </div>
+                  {state.isDirty && (
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[70]">
+                        <button onClick={resetLevel} className="text-white transition-all flex items-center gap-2 text-[11px] font-black uppercase bg-[#ef4444] px-6 py-2 rounded-full border border-white/20 hover:bg-[#dc2626] hover:scale-110 active:scale-95 shadow-md backdrop-blur-sm">
+                          <RotateCcw size={14} /> Reset Level [d + d]
+                        </button>
+                    </div>
+                  )}
 
                   {state.isConfirming && (
                     <div className="absolute bottom-0 left-0 right-0 h-8 bg-[#e0af68] text-[#1a1b26] flex items-center px-4 font-mono font-bold text-xs z-50 animate-in slide-in-from-bottom duration-150">
@@ -873,15 +895,19 @@ const App: React.FC = () => {
             </div>
 
             {state.isIntroOpen && (
-              <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl z-50 flex items-center justify-center animate-in fade-in zoom-in duration-300 p-8">
+              <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl z-[200] flex items-center justify-center animate-in fade-in zoom-in duration-300 p-8">
                 <div className="text-center space-y-8 max-w-4xl w-full">
-                  <div className="inline-flex items-center justify-center p-8 bg-[#7aa2f7] rounded-full"><Terminal size={80} className="text-[#1a1b26]" /></div>
+                  <div className="inline-flex items-center justify-center p-8 bg-[#7aa2f7] rounded-full"><Terminal size={60} className="text-[#1a1b26]" /></div>
                   <div className="space-y-2">
                     <h3 className="text-6xl font-black text-white italic tracking-tighter uppercase">MASTER THE TMUX</h3>
-                    <p className="text-[#7aa2f7] text-xl font-bold tracking-widest uppercase">{introSubtitle}</p>
-                    <div className="mt-8 space-y-2">{introBody.map((line, i) => <p key={i} className="text-slate-400 text-lg font-mono italic leading-relaxed">{line}</p>)}</div>
+                    <p className="text-[#7aa2f7] text-xl font-bold tracking-widest uppercase mb-12">{introSubtitle}</p>
+                    <div className="space-y-1.5 pt-6">
+                      {introBody.map((line, i) => (
+                        <p key={i} className="text-slate-400 text-[20px] font-serif italic leading-none">{line}</p>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex flex-col items-center gap-5 pt-8">
+                  <div className="flex flex-col items-center gap-5 pt-12">
                     <div className="px-12 py-6 bg-[#1e293b] border-2 border-[#7aa2f7] rounded-full text-sm text-white font-black uppercase tracking-[0.4em] shadow-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer" onClick={advanceLevel}>Press SPACE or ENTER to start</div>
                   </div>
                 </div>

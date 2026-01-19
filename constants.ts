@@ -214,9 +214,9 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
     levels: [
       {
         id: 22,
-        title: "Zoom",
+        title: "Toggle zoom",
         description: "Maximize a pane to full screen.",
-        objective: ["1. Vertical split [%]", "2. Zoom [z]"],
+        objective: ["1. Vertical split [%]", "2. Toggle zoom [z]"],
         requiredActions: ['prefix', '%', 'prefix', 'z'],
         hint: "z toggles full screen."
       },
@@ -240,7 +240,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         id: 25,
         title: "Zoom & Check",
         description: "Zoom, check time, then zoom to unzoom.",
-        objective: ["1. Vertical split [%]", "2. Zoom [z]", "3. Show clock [t]", "4. Zoom [z]"],
+        objective: ["1. Vertical split [%]", "2. Toggle zoom [z]", "3. Show clock [t]", "4. Toggle zoom [z]"],
         requiredActions: ['prefix', '%', 'prefix', 'z', 'prefix', 't', 'prefix', 'z'],
         hint: "Zoom is a toggle."
       },
@@ -264,15 +264,15 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         id: 28,
         title: "Zoom Navigation",
         description: "Zoom, unzoom, then move.",
-        objective: ["1. Vertical split [%]", "2. Zoom [z]", "3. Unzoom [z]", "4. Move left [ArrowLeft]"],
+        objective: ["1. Vertical split [%]", "2. Toggle zoom [z]", "3. Toggle zoom [z]", "4. Move left [ArrowLeft]"],
         requiredActions: ['prefix', '%', 'prefix', 'z', 'prefix', 'z', 'prefix', 'ArrowLeft'],
-        hint: "Unzoom is just another Zoom [z] command."
+        hint: "Unzoom is just another Toggle zoom [z] command."
       },
       {
         id: 29,
         title: "Utility Flow",
         description: "Clock, Hide, Zoom, Unzoom.",
-        objective: ["1. Show clock [t]", "2. Hide clock [Esc]", "3. Zoom [z]", "4. Zoom [z]"],
+        objective: ["1. Show clock [t]", "2. Hide clock [Esc]", "3. Toggle zoom [z]", "4. Toggle zoom [z]"],
         requiredActions: ['prefix', 't', 'Escape', 'prefix', 'z', 'prefix', 'z'],
         hint: "Speedrun utility keys."
       },
@@ -288,7 +288,7 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         id: 31,
         title: "Big Picture",
         description: "Zoom a specific side.",
-        objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Zoom [z]"],
+        objective: ["1. Vertical split [%]", "2. Move left [ArrowLeft]", "3. Toggle zoom [z]"],
         requiredActions: ['prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'z'],
         hint: "Zoom focus follows active pane."
       }
@@ -372,11 +372,11 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
       },
       {
         id: 41,
-        title: "Target Window 0",
-        description: "Open list and select window 0.",
-        objective: ["1. New window [c]", "2. List windows [w]", "3. Move up [ArrowUp]", "4. Select [Enter]"],
-        requiredActions: ['prefix', 'c', 'prefix', 'w', 'ArrowUp', 'Enter'],
-        hint: "Focus window 0 in the list then hit Enter."
+        title: "The Strategic Selector",
+        description: "Renaming tabs makes list navigation powerful. Find your lost home.",
+        objective: ["1. New window [c]", "2. Rename window [,] + 'dev' + [Enter]", "3. New window [c]", "4. List windows [w]", "5. Select window 'dev' [Enter]"],
+        requiredActions: ['prefix', 'c', 'prefix', ',', 'Enter', 'prefix', 'c', 'prefix', 'w', 'Enter'],
+        hint: "Rename your first new window to 'dev', create another, then select 'dev' in the list."
       }
     ]
   },
@@ -452,14 +452,14 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
         id: 50,
         title: "The Work Context",
         description: "Split and Zoom in a new window.",
-        objective: ["1. New [c]", "2. Vertical split [%]", "3. Zoom [z]"],
+        objective: ["1. New [c]", "2. Vertical split [%]", "3. Toggle zoom [z]"],
         requiredActions: ['prefix', 'c', 'prefix', '%', 'prefix', 'z'],
         hint: "Focus in your new tab."
       },
       {
         id: 51,
         title: "Naming Speed",
-        description: "Rename 0 to 'dev', rename 1 to 'ops'.",
+        description: "Rename window 0 to 'dev', rename 1 to 'ops'.",
         objective: ["1. Rename window [,]", "2. Type 'dev' + [Enter]", "3. New window [c]", "4. Rename window [,]", "5. Type 'ops' + [Enter]"],
         requiredActions: ['prefix', ',', 'Enter', 'prefix', 'c', 'prefix', ',', 'Enter'],
         hint: "Tag your workspaces."
@@ -566,35 +566,35 @@ export const LEVEL_DATA: { id: number; title: string; levels: Level[] }[] = [
       },
       {
         id: 63,
-        title: "Jump to 1",
-        description: "Identify and jump to 1.",
-        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]", "3. Jump to pane [1]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', '1'],
-        hint: "Flash identifies current IDs."
+        title: "Home Base Jump",
+        description: "Teleport from the far side back to 0 in a triple layout.",
+        objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Flash numbers [q]", "4. Jump to pane [0]"],
+        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', 'q', '0'],
+        hint: "Jump across two vertical boundaries to the first pane."
       },
       {
         id: 64,
-        title: "Jump & Zoom",
-        description: "Teleport focus then maximize.",
-        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]", "3. Jump to pane [1]", "4. Zoom [z]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', '1', 'prefix', 'z'],
-        hint: "Faster than arrow navigation."
+        title: "Jump & Focus",
+        description: "Teleport then maximize workspace.",
+        objective: ["1. Vertical split [%]", "2. Flash numbers [q]", "3. Jump to pane [0]", "4. Toggle zoom [z]"],
+        requiredActions: ['prefix', '%', 'prefix', 'q', '0', 'prefix', 'z'],
+        hint: "Move from 1 to 0 and immediately zoom."
       },
       {
         id: 65,
-        title: "Jump & Split",
-        description: "Jump to 1 then divide it.",
-        objective: ["1. Vertical split [%]", "2. Flash pane numbers [q]", "3. Jump to pane [1]", "4. Horizontal split [\"]"],
-        requiredActions: ['prefix', '%', 'prefix', 'q', '1', 'prefix', '"'],
-        hint: "Jump and expand."
+        title: "Remote Division",
+        description: "Teleport focus specifically to divide a remote pane.",
+        objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Move left [ArrowLeft]", "4. Move left [ArrowLeft]", "5. Flash numbers [q]", "6. Jump to pane [1]", "7. Horizontal split [\"]"],
+        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', 'ArrowLeft', 'prefix', 'ArrowLeft', 'prefix', 'q', '1', 'prefix', '"'],
+        hint: "Jump from the start (0) into the middle (1) then split it."
       },
       {
         id: 66,
-        title: "The Final Jump",
-        description: "Jump to pane 2.",
-        objective: ["1. Vertical split [%]", "2. Vertical split [%]", "3. Flash pane numbers [q]", "4. Jump to pane [2]"],
-        requiredActions: ['prefix', '%', 'prefix', '%', 'prefix', 'q', '2'],
-        hint: "Indices are 0, 1, 2."
+        title: "Diagonal Teleport",
+        description: "Navigate a complex 2x2 grid by ID jump.",
+        objective: ["1. Vertical split [%]", "2. Horizontal split [\"]", "3. Move left [ArrowLeft]", "4. Horizontal split [\"]", "5. Flash numbers [q]", "6. Jump to pane [2]"],
+        requiredActions: ['prefix', '%', 'prefix', '"', 'prefix', 'ArrowLeft', 'prefix', '"', 'prefix', 'q', '2'],
+        hint: "Jump from the bottom-left (3) to the bottom-right (2)."
       },
       {
         id: 67,
